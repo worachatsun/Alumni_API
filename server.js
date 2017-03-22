@@ -1,13 +1,21 @@
-var express = require('express');
+const express = require('express')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+
 var app = express()
 
-http.createServer(function(req,res){
-  res.writeHead({
-    'Content-Type' : 'text/plain'
-  });
-  res.end('Hello World');
-}).listen(3000);
+var router = require('./services/routers')
 
-console.log('Server at 3000');
+mongoose.connect('mongodb://localhost:Alumni/Alumni')
 
-module.exports = app;
+app.use(morgan('combined'))
+app.use(bodyParser.json())
+app.use('/v1', router)
+
+var PORT = process.env.PORT || 3000
+var HOST = process.env.HOST || '127.0.0.1'
+
+console.log('Listening on', HOST, PORT)
+
+app.listen(PORT,HOST)
