@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 
 var validateEmail = (email) => {
-    return (/\S+@\S+\.\S+/),test(email)
+    return (/\S+@\S+\.\S+/).test(email)
 }
 
 var userSchema = new Schema({

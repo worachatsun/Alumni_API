@@ -11,7 +11,6 @@ function tokenForUser (user) {
 }
 
 exports.signup = function(req, res, next) {
-    console.log(req)
     var email = req.body.email
     var password = req.body.password
     if (!email || !password) {
