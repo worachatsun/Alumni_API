@@ -7,7 +7,7 @@ var app = express()
 
 var router = require('./services/routers')
 
-mongoose.connect('mongodb://localhost:Alumni/Alumni')
+mongoose.connect('mongodb://localhost:testMongo/testMongo')
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())
