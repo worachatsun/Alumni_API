@@ -1,21 +1,15 @@
-const express = require('express')
-const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+var PORT = process.env.PORT || 3000
+var HOST = process.env.HOST || '127.0.0.1'
 
+let mongoose = require('./config/mongoose')
+let express = require('./config/express')
+
+let db = mongoose()
 var app = express()
 
 var router = require('./services/routers')
 
-mongoose.connect('mongodb://localhost:testMongo/testMongo')
-
-app.use(morgan('combined'))
-app.use(bodyParser.json())
-app.use('/v1', router)
-
-var PORT = process.env.PORT || 3000
-var HOST = process.env.HOST || '127.0.0.1'
+app.listen(PORT,HOST)
 
 console.log('Listening on', HOST, PORT)
-
-app.listen(PORT,HOST)

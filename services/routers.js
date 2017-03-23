@@ -1,4 +1,5 @@
-const AuthenticationController = require('../controllers/authentication_controller')
+const AuthenticationController = require('../controllers/authentication.controller')
+const NewsController = require('../controllers/news.controller')
 
 var router = require('express').Router()
 
@@ -12,4 +13,9 @@ router.route('/protected')
 router.route('/signup')
     .post(AuthenticationController.signup)
 
-module.exports = router
+router.route('/createNews')
+    .post(NewsController.createNews)
+
+module.exports = function(app) {
+    app.use('/v1', router)
+}
