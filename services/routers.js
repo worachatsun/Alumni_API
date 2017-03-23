@@ -16,6 +16,9 @@ router.route('/signup')
 router.route('/createNews')
     .post(NewsController.createNews)
 
+router.route('/getNews')
+    .get(NewsController.getNews)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }

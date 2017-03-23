@@ -1,4 +1,4 @@
-const News = require('../models/news')
+const News = require('mongoose').model('news')
 
 const newDate = new Date()
 
@@ -27,5 +27,11 @@ exports.createNews = function(req, res, next) {
 }
 
 exports.getNews = function(req, res, next) {
-    
+    News.find({}, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(news)
+        }
+    })
 }

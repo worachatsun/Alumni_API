@@ -2,7 +2,11 @@ const config = require('./config')
 const mongoose = require('mongoose')
 
 module.exports = function() {
+    mongoose.set('debug', config.debug)
     let db = mongoose.connect(config.mongoUri)
-    mongoose.set('debug', true)
+    
+    require('../models/user')
+    require('../models/news')
+
     return db
 }
