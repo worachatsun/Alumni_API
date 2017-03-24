@@ -1,12 +1,13 @@
 const News = require('mongoose').model('news')
 
-const newDate = new Date()
-
 exports.createNews = function(req, res, next) {
     let news_title = req.body.news_title
     let news_text = req.body.news_text
     let category = req.body.category
     let news_role = req.body.news_role
+    let picture = req.body.picture
+    let youtube = req.body.youtube
+    let link = req.body.link
     if (!news_title || !news_text || !category || !news_role) {
         return res.status(422).json({error: "You must provide an data"})
     }
@@ -16,12 +17,17 @@ exports.createNews = function(req, res, next) {
         news_text,
         category,
         news_role,
-        created_at: newDate,
-        updated_at: newDate
+        assets: {
+            picture,
+            video:{
+                youtube
+            },
+            link
+        }
     })
 
     news.save(function(err) {
-        if (err) { return next(err+"sd") }
+        if (err) { return next(err) }
         res.json({ news })
     })
 }

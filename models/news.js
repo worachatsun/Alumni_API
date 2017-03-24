@@ -18,22 +18,27 @@ var newsSchema = new Schema({
         type: String,
         required: 'Please choose news role'
     },
-    // assets: {
-    //     picture: {
-    //         type: String,
-    //         required: "Insert picture"
-    //     },
-    //     video: {
-    //         youtube: {
-    //             type: String
-    //         }
-    //     },
-    //     link: {
-    //         type: String
-    //     }
-    // },
-    created_at: { },
-    updated_at: { }
+    assets: {
+        picture: {
+            type: String,
+        },
+        video: {
+            youtube: {
+                type: String
+            }
+        },
+        link: {
+            type: String
+        }
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 module.exports = mongoose.model('news', newsSchema)
