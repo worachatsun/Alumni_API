@@ -11,8 +11,8 @@ exports.createEvent = function(req, res, next) {
     let location = req.body.location
     let event_owner_id = req.body.event_owner_id
     let picture = req.body.picture
-    let create_by = req.body.create_by
-    if (!news_title || !news_text || !category || !news_role) {
+    let created_by = req.body.created_by
+    if (!event_name || !event_description || !person_limit || !created_by) {
         return res.status(422).json({error: "You must provide an data"})
     }
 
@@ -31,21 +31,21 @@ exports.createEvent = function(req, res, next) {
         assets: {
             picture,
         },
-        create_by
+        created_by
     })
 
     event.save(function(err) {
-        if (err) { return next(err) }
+        if (err) { return next(err+"asd") }
         res.json({ event })
     })
 }
 
 exports.getEvent = function(req, res, next) {
-    Event.find({}, function(err, news) {
+    Event.find({}, function(err, event) {
         if (err) {
             return next(err)
         } else {
-            res.json(news)
+            res.json(event)
         }
     })
 }

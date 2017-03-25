@@ -20,7 +20,10 @@ router.route('/createNews')
 router.route('/getNews')
     .get(NewsController.getNews)
 
-router.route('./createEvent')
+router.route('/getEvent')
+    .get(EventController.getEvent)
+
+router.route('/createEvent')
     .post(EventController.createEvent)
 
 module.exports = function(app) {
