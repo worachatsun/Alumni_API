@@ -1,5 +1,6 @@
 const AuthenticationController = require('../controllers/authentication.controller')
 const NewsController = require('../controllers/news.controller')
+const EventController = require('../controllers/event.controller')
 
 var router = require('express').Router()
 
@@ -18,6 +19,9 @@ router.route('/createNews')
 
 router.route('/getNews')
     .get(NewsController.getNews)
+
+router.route('./createEvent')
+    .post(EventController.createEvent)
 
 module.exports = function(app) {
     app.use('/v1', router)
