@@ -41,3 +41,13 @@ exports.getNews = function(req, res, next) {
         }
     })
 }
+
+exports.getNewsByFaculty = function(req, res, next) {
+    News.find({ news_role: req.params.faculty}, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(news)
+        }
+    })
+}

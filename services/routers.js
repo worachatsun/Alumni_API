@@ -26,6 +26,9 @@ router.route('/getEvent')
 router.route('/createEvent')
     .post(EventController.createEvent)
 
+router.route('/getNewsByFaculty/:faculty')
+    .get(NewsController.getNewsByFaculty)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }
