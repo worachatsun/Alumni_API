@@ -29,6 +29,12 @@ router.route('/createEvent')
 router.route('/getNewsByFaculty/:faculty')
     .get(NewsController.getNewsByFaculty)
 
+router.route('/addFavoriteNews')
+    .post(AuthenticationController.updateFavoriteNews)
+
+router.route('/deleteFavoriteNews')
+    .post(AuthenticationController.undoFavoriteNews)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }

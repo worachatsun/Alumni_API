@@ -15,8 +15,12 @@ let userSchema = new Schema({
         validate: [validateEmail, 'Please enter a valid email']
     },
     password: {
-        type: String
-    }
+        type: String,
+        required: 'Password is required',
+    },
+    favorite_news: [{
+        type: Schema.ObjectId
+    }]
 })
 
 userSchema.pre('save', function(next) {

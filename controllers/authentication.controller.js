@@ -1,9 +1,10 @@
 const User = require('mongoose').model('user')
+const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const config = require('../config')
 
 function tokenForUser (user) {
-    var timestamp = new Date().getTime()
+    let timestamp = new Date().getTime()
     return jwt.encode({
         sub: user.id,
         iat: timestamp
@@ -11,8 +12,8 @@ function tokenForUser (user) {
 }
 
 exports.signup = function(req, res, next) {
-    var email = req.body.email
-    var password = req.body.password
+    let email = req.body.email
+    let password = req.body.password
     if (!email || !password) {
         return res.status(422).json({error: "You must provide an email and password"})
     }
@@ -20,7 +21,7 @@ exports.signup = function(req, res, next) {
     User.findOne({email: email}, function(err, existingUser) {
         if (err) { return next(err) }
         if (existingUser) { return res.status(422).json({error: "Email taken"})}
-        var user = new User({
+        let user = new User({
             email: email,
             password: password
         })
@@ -29,4 +30,38 @@ exports.signup = function(req, res, next) {
             res.json({ user_id: user._id, token: tokenForUser(user)})
         })
     })
+}
+
+exports.updateFavoriteNews = function(req, res, next) {
+    let favorite_news = req.body.favorite_news
+    let user_id = req.body.user_id
+    if (!user_id || !favorite_news) {
+        return res.status(422).json({error: "You must provide an user_id and favorite_news"})
+    }
+
+    User.update(
+        { _id: mongoose.Types.ObjectId(user_id) },
+        { $push: { favorite_news: mongoose.Types.ObjectId(favorite_news) }},
+        function(err, users) {
+            if (err) { return next(err) }
+            res.json(users)
+        }
+    )
+}
+
+exports.undoFavoriteNews = function(req, res, next) {
+    let favorite_news = req.body.favorite_news
+    let user_id = req.body.user_id
+    if (!user_id || !favorite_news) {
+        return res.status(422).json({error: "You must provide an user_id and favorite_news"})
+    }
+
+    User.update(
+        { _id: mongoose.Types.ObjectId(user_id) },
+        { $pull: { favorite_news: mongoose.Types.ObjectId(favorite_news) }},
+        function(err, users) {
+            if (err) { return next(err) }
+            res.json(users)
+        }
+    )
 }
