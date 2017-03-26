@@ -1,4 +1,5 @@
 const User = require('mongoose').model('user')
+const News = require('mongoose').model('news')
 const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const config = require('../config')
@@ -74,9 +75,26 @@ exports.checkFavoriteNews = function(req, res, next) {
     }
 
     User.find({$and : [{_id:mongoose.Types.ObjectId(user_id)},{favorite_news:mongoose.Types.ObjectId(favorite_news)}]},
-    function(err, User){console.log(User)
+    function(err, User){
         if (err) { return next(err) }
         if (User!="") { res.json(true) }
         else {res.json(false)}
+    })
+}
+
+exports.getAllFavoriteNews = function(req, res, next) {
+    User.find({ _id: mongoose.Types.ObjectId(req.params.id) }, { _id: false, favorite_news: true}, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            let favorite = news[0].favorite_news.map((id) => mongoose.Types.ObjectId(id))
+            News.find({ _id: {$in: favorite }}, function(err, favorite_news) {
+                if (err) {
+                    return next(err)
+                } else {
+                    res.json(favorite_news)
+                }
+            })
+        }
     })
 }

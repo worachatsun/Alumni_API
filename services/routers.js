@@ -38,6 +38,9 @@ router.route('/deleteFavoriteNews')
 router.route('/checkFavoriteNews')
     .post(AuthenticationController.checkFavoriteNews)
 
+router.route('/getAllFavoriteNews/:id')
+    .get(AuthenticationController.getAllFavoriteNews)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }
