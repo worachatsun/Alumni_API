@@ -65,3 +65,18 @@ exports.undoFavoriteNews = function(req, res, next) {
         }
     )
 }
+
+exports.checkFavoriteNews = function(req, res, next) {
+    let favorite_news = req.body.favorite_news
+    let user_id = req.body.user_id
+    if (!user_id || !favorite_news) {
+        return res.status(422).json({error: "You must provide an user_id and favorite_news"})
+    }
+
+    User.find({$and : [{_id:mongoose.Types.ObjectId(user_id)},{favorite_news:mongoose.Types.ObjectId(favorite_news)}]},
+    function(err, User){console.log(User)
+        if (err) { return next(err) }
+        if (User!="") { res.json(true) }
+        else {res.json(false)}
+    })
+}
