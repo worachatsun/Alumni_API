@@ -45,7 +45,22 @@ exports.updateFavoriteNews = function(req, res, next) {
         { $push: { favorite_news: mongoose.Types.ObjectId(favorite_news) }},
         function(err, users) {
             if (err) { return next(err) }
-            res.json(users)
+            else{
+                User.find({ _id: mongoose.Types.ObjectId(user_id) }, { _id: false, favorite_news: true}, function(err, news) {
+                    if (err) {
+                        return next(err)
+                    } else {
+                        let favorite = news[0].favorite_news.map((id) => mongoose.Types.ObjectId(id))
+                        News.find({ _id: {$in: favorite }}, function(err, favorite_news) {
+                            if (err) {
+                                return next(err)
+                            } else {
+                                res.json(favorite_news)
+                            }
+                        })
+                    }
+                })
+            }
         }
     )
 }
@@ -62,7 +77,22 @@ exports.undoFavoriteNews = function(req, res, next) {
         { $pull: { favorite_news: mongoose.Types.ObjectId(favorite_news) }},
         function(err, users) {
             if (err) { return next(err) }
-            res.json(users)
+            else{
+                User.find({ _id: mongoose.Types.ObjectId(user_id) }, { _id: false, favorite_news: true}, function(err, news) {
+                    if (err) {
+                        return next(err)
+                    } else {
+                        let favorite = news[0].favorite_news.map((id) => mongoose.Types.ObjectId(id))
+                        News.find({ _id: {$in: favorite }}, function(err, favorite_news) {
+                            if (err) {
+                                return next(err)
+                            } else {
+                                res.json(favorite_news)
+                            }
+                        })
+                    }
+                })
+            }
         }
     )
 }
