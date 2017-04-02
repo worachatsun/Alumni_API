@@ -55,12 +55,32 @@ exports.getEvent = function(req, res, next) {
 exports.joinEvent = function(req, res, next) {
     let join_event = req.body.join_event
     let user_id = req.body.user_id
+    Event.update(
+        { _id: mongoose.Types.ObjectId(join_event) },
+        { $push: { event_joiner: mongoose.Types.ObjectId(user_id) }},
+        function(err) {
+            if (err) { return next(err) }
+        }
+    )
     User.update(
         { _id: mongoose.Types.ObjectId(user_id) },
         { $push: { join_events: mongoose.Types.ObjectId(join_event) }},
-        function(err, event) {
+        function(err) {
             if (err) { return next(err) }
-            res.json(event)
+            User.find({ _id: mongoose.Types.ObjectId(user_id) }, { _id: false, join_events: true}, function(err, event) {
+                if (err) {
+                    return next(err)
+                } else {
+                    let join = event[0].join_events.map((id) => mongoose.Types.ObjectId(id))
+                    Event.find({ _id: {$in: join }}, function(err, join_events) {
+                        if (err) {
+                            return next(err)
+                        } else {
+                            res.json(join_events)
+                        }
+                    })
+                }
+            })
         }
     )
 }

@@ -46,9 +46,7 @@ var eventSchema = new Schema({
         }]
     },
     event_joiner: [{
-        joiner_id: {
             type: String
-        }
     }],
     created_at: {
         type: Date,
