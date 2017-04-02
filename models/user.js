@@ -20,6 +20,9 @@ let userSchema = new Schema({
     },
     favorite_news: [{
         type: Schema.ObjectId
+    }],
+    join_events: [{
+        type: Schema.ObjectId
     }]
 })
 

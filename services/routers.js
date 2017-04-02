@@ -41,6 +41,9 @@ router.route('/checkFavoriteNews')
 router.route('/getAllFavoriteNews/:id')
     .get(AuthenticationController.getAllFavoriteNews)
 
+router.route('/joinEvent')
+    .post(EventController.joinEvent)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }

@@ -1,4 +1,6 @@
 const Event = require('mongoose').model('event')
+const User = require('mongoose').model('user')
+const mongoose = require('mongoose')
 
 exports.createEvent = function(req, res, next) {
     let event_name = req.body.event_name
@@ -48,4 +50,17 @@ exports.getEvent = function(req, res, next) {
             res.json(event)
         }
     })
+}
+
+exports.joinEvent = function(req, res, next) {
+    let join_event = req.body.join_event
+    let user_id = req.body.user_id
+    User.update(
+        { _id: mongoose.Types.ObjectId(user_id) },
+        { $push: { join_events: mongoose.Types.ObjectId(join_event) }},
+        function(err, event) {
+            if (err) { return next(err) }
+            res.json(event)
+        }
+    )
 }
