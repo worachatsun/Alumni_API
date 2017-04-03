@@ -48,6 +48,9 @@ var eventSchema = new Schema({
     event_joiner: [{
             type: String
     }],
+    coupon_available: [{
+        type: String
+    }],
     created_at: {
         type: Date,
         default: Date.now
@@ -59,7 +62,7 @@ var eventSchema = new Schema({
     created_by: {
         type: String,
         required: 'Please insert creater'
-    }
+    },
 })
 
 module.exports = mongoose.model('event', eventSchema)
