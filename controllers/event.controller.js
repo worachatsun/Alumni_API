@@ -104,9 +104,9 @@ exports.eventAvailable = function(req, res, next) {
             return next(err)
         } else {
             if(person_limit[0].event_joiner.length > parseInt(person_limit[0].person_limit)){
-                res.json(true)
+                res.json(false)
             }
-            res.json(false)
+            res.json(true)
         }
     })
 }
@@ -121,7 +121,8 @@ exports.joinEventByCoupon = function(req, res, next) {
         function(err, coupon_found){
             if(err) {return next(err)}
             res.json(coupon_found)
-        })
+        }
+    )
 }
 
 exports.addEventCoupon = function(req, res, next) {
