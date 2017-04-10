@@ -57,42 +57,56 @@ exports.getEvent = function(req, res, next) {
 exports.joinEvent = function(req, res, next) {
     let join_event = req.body.join_event
     let user_id = req.body.user_id
-    Event.find({ _id: mongoose.Types.ObjectId(join_event)}, { _id: false, person_limit: true, event_joiner: true }, function(err, person_limit) {
-        if (err) {
-            return next(err)
-        } else {
-            if(person_limit[0].event_joiner.length > parseInt(person_limit[0].person_limit)){
-                res.json('Out of length')
-            }else{
-                Event.update(
-                    { _id: mongoose.Types.ObjectId(join_event) },
-                    { $push: { event_joiner: mongoose.Types.ObjectId(user_id) }},
-                    function(err) {
-                        if (err) { return next(err) }
-                    }
-                )
-                User.update(
-                { _id: mongoose.Types.ObjectId(user_id) },
-                { $push: { join_events: mongoose.Types.ObjectId(join_event) }},
-                function(err) {
-                    if (err) { return next(err) }
-                    User.find({ _id: mongoose.Types.ObjectId(user_id) }, { _id: false, join_events: true}, function(err, event) {
-                            if (err) {
-                                return next(err)
-                            } else {
-                                let join = event[0].join_events.map((id) => mongoose.Types.ObjectId(id))
-                                Event.find({ _id: {$in: join }}, function(err, join_events) {
-                                    if (err) {
-                                        return next(err)
-                                    } else {
-                                        res.json(join_events)
+    Event.find({ _id: mongoose.Types.ObjectId(join_event), event_joiner: {$in: [user_id]}}, function(err, event_data) {
+        if(err) {return next(err)}
+        if(event_data[0]){
+            res.json('joined') 
+        }else{
+            User.find({ _id: mongoose.Types.ObjectId(user_id), event_joiner: {$in: [mongoose.Types.ObjectId(join_event)]}}, function(err, event_data){
+                if(err) {return next(err)}
+                if(event_data[0]){
+                    res.json('joined') 
+                }else{
+                    Event.find({ _id: mongoose.Types.ObjectId(join_event)}, { _id: false, person_limit: true, event_joiner: true }, function(err, person_limit) {
+                        if (err) {
+                            return next(err)
+                        } else {
+                            if(person_limit[0].event_joiner.length > parseInt(person_limit[0].person_limit)){
+                                res.json('Out of length')
+                            }else{
+                                Event.update(
+                                    { _id: mongoose.Types.ObjectId(join_event) },
+                                    { $push: { event_joiner: mongoose.Types.ObjectId(user_id) }},
+                                    function(err) {
+                                        if (err) { return next(err) }
                                     }
-                                })
+                                )
+                                User.update(
+                                { _id: mongoose.Types.ObjectId(user_id) },
+                                { $push: { join_events: mongoose.Types.ObjectId(join_event) }},
+                                function(err) {
+                                    if (err) { return next(err) }
+                                    User.find({ _id: mongoose.Types.ObjectId(user_id) }, { _id: false, join_events: true}, function(err, event) {
+                                            if (err) {
+                                                return next(err)
+                                            } else {
+                                                let join = event[0].join_events.map((id) => mongoose.Types.ObjectId(id))
+                                                Event.find({ _id: {$in: join }}, function(err, join_events) {
+                                                    if (err) {
+                                                        return next(err)
+                                                    } else {
+                                                        res.json(join_events)
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                )
                             }
-                        })
-                    }
-                )
-            }
+                        }
+                    })
+                }
+            })
         }
     })
 }

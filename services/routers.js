@@ -38,6 +38,8 @@ router.route('/joinEventByCoupon').post(EventController.joinEventByCoupon)
 
 router.route('/addEventCoupon').post(EventController.addEventCoupon)
 
+router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
+
 module.exports = function(app) {
     app.use('/v1', router)
 }

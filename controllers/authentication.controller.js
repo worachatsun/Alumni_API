@@ -1,5 +1,6 @@
 const User = require('mongoose').model('user')
 const News = require('mongoose').model('news')
+const Event = require('mongoose').model('event')
 const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const config = require('../config')
@@ -123,6 +124,23 @@ exports.getAllFavoriteNews = function(req, res, next) {
                     return next(err)
                 } else {
                     res.json(favorite_news)
+                }
+            })
+        }
+    })
+}
+
+exports.getJoinedEvent = function(req, res, next) {
+    User.find({ _id: mongoose.Types.ObjectId(req.params.id) }, { _id: false, join_events: true}, function(err, event) {
+        if (err) {
+            return next(err)
+        } else {
+            let joined = event[0].join_events.map((id) => mongoose.Types.ObjectId(id))
+            Event.find({ _id: {$in: joined }}, function(err, join_events) {
+                if (err) {
+                    return next(err)
+                } else {
+                    res.json(join_events)
                 }
             })
         }
