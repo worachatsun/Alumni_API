@@ -60,7 +60,7 @@ var eventSchema = new Schema({
         default: Date.now
     },
     created_by: {
-        type: String,
+        type: Schema.ObjectId,
         required: 'Please insert creater'
     },
 })

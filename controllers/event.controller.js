@@ -39,7 +39,7 @@ exports.createEvent = function(req, res, next) {
     })
 
     event.save(function(err) {
-        if (err) { return next(err+"asd") }
+        if (err) { return next(err) }
         res.json({ event })
     })
 }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const donationSchema = new Schema({
+let donationSchema = new Schema({
     project_name: {
         type: String,
         required: 'Please insert project donation'
@@ -9,6 +9,23 @@ const donationSchema = new Schema({
     project_description: {
         type: String,
         required: 'Please insert donation description'
+    },
+    picture: {
+        type: String,
+        required: 'Please choose cover image'
+    },
+    donate: {
+        how_to: {
+            type: String 
+        },
+        slip_upload: [{
+            user_id: {
+                type: Schema.ObjectId
+            },
+            image_url: {
+                type: String
+            }
+        }]
     },
     created_at: {
         type: Date,
@@ -19,7 +36,7 @@ const donationSchema = new Schema({
         default: Date.now
     },
     created_by: {
-        type: String,
+        type: Schema.ObjectId,
         required: 'Please insert creater'
     },
 })

@@ -8,6 +8,7 @@ module.exports = function() {
     require('../models/user')
     require('../models/news')
     require('../models/event')
+    require('../models/donation')
 
     return db
 }

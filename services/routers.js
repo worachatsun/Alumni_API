@@ -1,6 +1,7 @@
 const AuthenticationController = require('../controllers/authentication.controller')
 const NewsController = require('../controllers/news.controller')
 const EventController = require('../controllers/event.controller')
+const DonateController = require('../controllers/donation.controller')
 
 var router = require('express').Router()
 
@@ -39,6 +40,8 @@ router.route('/joinEventByCoupon').post(EventController.joinEventByCoupon)
 router.route('/addEventCoupon').post(EventController.addEventCoupon)
 
 router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
+
+router.route('/createDonation').post(DonateController.createDonation)
 
 module.exports = function(app) {
     app.use('/v1', router)
