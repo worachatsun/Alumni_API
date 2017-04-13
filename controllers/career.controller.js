@@ -38,3 +38,10 @@ exports.createCareer = function(req, res, next) {
     })
 
 }
+
+exports.getCareer = function(req, res, next) {
+    Career.find({}, function(err, career){
+        if(err) {return next(err)}
+        res.json(career)
+    })
+}
