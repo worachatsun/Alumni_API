@@ -15,7 +15,9 @@ exports.createDonation = function(req, res, next) {
     let donation = new Donation({
         project_name,
         project_description,
-        picture,
+        assets: {
+            picture
+        },
         donate: {
             how_to,
         },
@@ -27,4 +29,11 @@ exports.createDonation = function(req, res, next) {
         res.json({donation})
     })
 
+}
+
+exports.getDonation = function(req, res, next) {
+    Donation.find({}, function(err, data){
+        if(err) {return next(err)}
+        res.json(data)
+    })
 }

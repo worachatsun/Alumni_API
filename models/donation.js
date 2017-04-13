@@ -10,9 +10,11 @@ let donationSchema = new Schema({
         type: String,
         required: 'Please insert donation description'
     },
-    picture: {
-        type: String,
-        required: 'Please choose cover image'
+    assets: {
+        picture: {
+            type: String,
+            required: 'Please choose cover image'
+        }
     },
     donate: {
         how_to: {

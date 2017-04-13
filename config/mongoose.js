@@ -9,6 +9,7 @@ module.exports = function() {
     require('../models/news')
     require('../models/event')
     require('../models/donation')
+    require('../models/career')
 
     return db
 }

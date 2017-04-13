@@ -2,6 +2,7 @@ const AuthenticationController = require('../controllers/authentication.controll
 const NewsController = require('../controllers/news.controller')
 const EventController = require('../controllers/event.controller')
 const DonateController = require('../controllers/donation.controller')
+const CareerController = require('../controllers/career.controller')
 
 var router = require('express').Router()
 
@@ -42,6 +43,10 @@ router.route('/addEventCoupon').post(EventController.addEventCoupon)
 router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
 
 router.route('/createDonation').post(DonateController.createDonation)
+
+router.route('/getDonation').get(DonateController.getDonation)
+
+router.route('/createCareer').post(CareerController.createCareer)
 
 module.exports = function(app) {
     app.use('/v1', router)
