@@ -13,6 +13,11 @@ function tokenForUser (user) {
     }, config.secret)
 }
 
+exports.signin = function(req, res, next) {
+    let user = req.user
+    res.send({token: tokenForUser(user), user_id: user._id})
+}
+
 exports.signup = function(req, res, next) {
     let email = req.body.email
     let password = req.body.password

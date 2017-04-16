@@ -14,9 +14,13 @@ let carrerSchema = new Schema({
         type: String,
         required: 'Please insert Qualification'
     },
+    position: {
+        type: String,
+        required: 'Please insert Position'
+    },
     company: {
         type: String,
-        required: 'Please insert company'
+        required: 'Please insert Company'
     },
     capacity: {
         type: String

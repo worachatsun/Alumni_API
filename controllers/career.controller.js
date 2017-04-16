@@ -11,8 +11,9 @@ exports.createCareer = function(req, res, next) {
     let created_by_id = req.body.created_by_id
     let created_by_name = req.body.created_by_name
     let picture = req.body.picture
+    let position = req.body.position
 
-    if (!career_name || !career_description || !qualification || !company || !created_by_id || !created_by_name) {
+    if (!career_name || !position || !career_description || !qualification || !company || !created_by_id || !created_by_name) {
         return res.status(422).json({error: "You must provide an data"})
     }
 
@@ -23,6 +24,7 @@ exports.createCareer = function(req, res, next) {
             picture
         },
         capacity,
+        position,
         qualification,
         company,
         salary,
@@ -40,7 +42,10 @@ exports.createCareer = function(req, res, next) {
 }
 
 exports.getCareer = function(req, res, next) {
-    Career.find({}, function(err, career){
+    console.log(req.params.limit)
+    let limit = req.params.offset || 0
+    let offset = req.params.limit || 10
+    Career.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, career){
         if(err) {return next(err)}
         res.json(career)
     })
