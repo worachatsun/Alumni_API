@@ -42,7 +42,6 @@ exports.createCareer = function(req, res, next) {
 }
 
 exports.getCareer = function(req, res, next) {
-    console.log(req.params.limit)
     let limit = req.params.offset || 0
     let offset = req.params.limit || 10
     Career.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, career){

@@ -18,12 +18,65 @@ let userSchema = new Schema({
         type: String,
         required: 'Password is required',
     },
+    name: {
+        type: String,
+        required: 'Require Name'
+    },
+    surname: {
+        type: String,
+        required: 'Require Surname'
+    },
+    tel: {
+        type: String,
+        required: 'Require Telephone number'
+    },
+    address: {
+        type: String,
+        required: 'Require Address'
+    },
+    assets: {
+        picture: [{
+            type: String,
+        }]
+    },
+    graduate_histories: [{
+        position: {
+            type: String
+        },
+        place: {
+            type: String
+        }
+    }],
+    career_histories: [{
+        position: {
+            type: String
+        },
+        place: {
+            type: String
+        }
+    }],
+    award_histories: [{
+        position: {
+            type: String
+        },
+        place: {
+            type: String
+        }
+    }],
     favorite_news: [{
         type: Schema.ObjectId
     }],
     join_events: [{
         type: Schema.ObjectId
-    }]
+    }],
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 userSchema.pre('save', function(next) {

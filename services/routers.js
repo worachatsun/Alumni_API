@@ -26,8 +26,9 @@ router.route('/getAllFavoriteNews/:id').get(AuthenticationController.getAllFavor
 router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
 
 router.route('/createNews').post(NewsController.createNews)
+router.route('/getNews/:offset/:limit').get(NewsController.getNewsByOffset)
 router.route('/getNews').get(NewsController.getNews)
-router.route('/getNewsByFaculty/:faculty').get(NewsController.getNewsByFaculty)
+router.route('/getNewsByFaculty/:faculty/:offset/:limit').get(NewsController.getNewsByFaculty)
 
 router.route('/joinEvent').post(EventController.joinEvent)
 router.route('/eventAvailable').post(EventController.eventAvailable)
@@ -37,7 +38,7 @@ router.route('/getEvent').get(EventController.getEvent)
 router.route('/createEvent').post(EventController.createEvent)
 
 router.route('/createDonation').post(DonateController.createDonation)
-router.route('/getDonation').get(DonateController.getDonation)
+router.route('/getDonation/:offset/:limit').get(DonateController.getDonation)
 
 router.route('/createCareer').post(CareerController.createCareer)
 router.route('/getCareer').get(CareerController.getCareer)

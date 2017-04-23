@@ -21,6 +21,11 @@ exports.signin = function(req, res, next) {
 exports.signup = function(req, res, next) {
     let email = req.body.email
     let password = req.body.password
+    let name = req.body.name
+    let surname = req.body.surname
+    let tel = req.body.tel
+    let address = req.body.address
+    let picture = req.body.picture
     if (!email || !password) {
         return res.status(422).json({error: "You must provide an email and password"})
     }
@@ -29,8 +34,15 @@ exports.signup = function(req, res, next) {
         if (err) { return next(err) }
         if (existingUser) { return res.status(422).json({error: "Email taken"})}
         let user = new User({
-            email: email,
-            password: password
+            email,
+            password,
+            name,
+            surname,
+            tel,
+            address,
+            assets: {
+                picture
+            }
         })
         user.save(function(err) {
             if (err) { return next(err) }

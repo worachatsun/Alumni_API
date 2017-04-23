@@ -32,6 +32,18 @@ exports.createNews = function(req, res, next) {
     })
 }
 
+exports.getNewsByOffset = function(req, res, next) {
+    let limit = req.params.offset || 0
+    let offset = req.params.limit || 10
+    News.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(news)
+        }
+    })
+}
+
 exports.getNews = function(req, res, next) {
     News.find({}, function(err, news) {
         if (err) {
@@ -43,7 +55,9 @@ exports.getNews = function(req, res, next) {
 }
 
 exports.getNewsByFaculty = function(req, res, next) {
-    News.find({ news_role: req.params.faculty}, function(err, news) {
+    let limit = req.params.offset || 0
+    let offset = req.params.limit || 10
+    News.find({ news_role: req.params.faculty}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, news) {
         if (err) {
             return next(err)
         } else {

@@ -32,7 +32,9 @@ exports.createDonation = function(req, res, next) {
 }
 
 exports.getDonation = function(req, res, next) {
-    Donation.find({}, function(err, data){
+    let limit = req.params.offset || 0
+    let offset = req.params.limit || 10
+    Donation.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, data){
         if(err) {return next(err)}
         res.json(data)
     })
