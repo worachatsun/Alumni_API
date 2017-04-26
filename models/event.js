@@ -26,13 +26,13 @@ var eventSchema = new Schema({
         type: Date,
         required: 'Please choose Event Date'
     },
-    location: {
-        type: String,
-        required: 'Please insert location'
-    },
     event_date_end: {
         type: Date,
         required: 'Please choose Event Date'
+    },
+    location: {
+        type: String,
+        required: 'Please insert location'
     },
     event_owner: {
         owner_id: {

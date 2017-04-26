@@ -28,13 +28,15 @@ exports.createEvent = function(req, res, next) {
         event_date_begin,
         event_date_end,
         location,
-        coupon,
+        coupon_available: [
+            coupon
+        ],
         event_owner: {
             owner_id: event_owner_id
         },
-        assets: {
+        assets: [{
             picture,
-        },
+        }],
         created_by
     })
 
@@ -150,4 +152,16 @@ exports.addEventCoupon = function(req, res, next) {
             res.json(true)
         }
     )
+}
+
+exports.getEventByOffset = function(req, res, next) {
+    let limit = req.params.offset || 0
+    let offset = req.params.limit || 10
+    Event.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(news)
+        }
+    })
 }

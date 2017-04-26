@@ -39,3 +39,13 @@ exports.getDonation = function(req, res, next) {
         res.json(data)
     })
 }
+
+exports.getAllDonation = function(req, res, next) {
+    Donation.find({}, function(err, donation) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(donation)
+        }
+    })
+}

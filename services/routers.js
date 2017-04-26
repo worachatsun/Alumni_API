@@ -35,10 +35,12 @@ router.route('/eventAvailable').post(EventController.eventAvailable)
 router.route('/joinEventByCoupon').post(EventController.joinEventByCoupon)
 router.route('/addEventCoupon').post(EventController.addEventCoupon)
 router.route('/getEvent').get(EventController.getEvent)
+router.route('/getEvent/:offset/:limit').get(EventController.getEventByOffset)
 router.route('/createEvent').post(EventController.createEvent)
 
 router.route('/createDonation').post(DonateController.createDonation)
 router.route('/getDonation/:offset/:limit').get(DonateController.getDonation)
+router.route('/getDonation').get(DonateController.getAllDonation)
 
 router.route('/createCareer').post(CareerController.createCareer)
 router.route('/getCareer').get(CareerController.getCareer)
