@@ -49,3 +49,13 @@ exports.getCareer = function(req, res, next) {
         res.json(career)
     })
 }
+
+exports.getAllCareer = function(req, res, next) {
+    Career.find({}, function(err, career) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(career)
+        }
+    })
+}

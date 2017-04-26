@@ -43,7 +43,7 @@ router.route('/getDonation/:offset/:limit').get(DonateController.getDonation)
 router.route('/getDonation').get(DonateController.getAllDonation)
 
 router.route('/createCareer').post(CareerController.createCareer)
-router.route('/getCareer').get(CareerController.getCareer)
+router.route('/getCareer').get(CareerController.getAllCareer)
 router.route('/getCareer/:offset/:limit').get(CareerController.getCareer)
 
 module.exports = function(app) {
