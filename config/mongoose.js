@@ -10,6 +10,8 @@ module.exports = function() {
     require('../models/event')
     require('../models/donation')
     require('../models/career')
+    require('../models/student')
+    require('../models/inbox')
 
     return db
 }

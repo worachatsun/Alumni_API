@@ -7,16 +7,28 @@ let validateEmail = (email) => {
 }
 
 let userSchema = new Schema({
-    email: {
+    // email: {
+    //     type: String,
+    //     unique: true,
+    //     lowercase: true,
+    //     required: 'Email address is required',
+    //     validate: [validateEmail, 'Please enter a valid email']
+    // },
+    // password: {
+    //     type: String,
+    //     required: 'Password is required',
+    // },
+    uid: {
         type: String,
         unique: true,
-        lowercase: true,
-        required: 'Email address is required',
-        validate: [validateEmail, 'Please enter a valid email']
+        required: 'Student ID is required',
     },
-    password: {
+    email: {
         type: String,
-        required: 'Password is required',
+        required: 'Require Email'
+    },
+    faculty: {
+        type: String
     },
     name: {
         type: String,
@@ -28,16 +40,17 @@ let userSchema = new Schema({
     },
     tel: {
         type: String,
-        required: 'Require Telephone number'
+    },
+    role: {
+        type: String
     },
     address: {
         type: String,
-        required: 'Require Address'
     },
     assets: {
-        picture: [{
+        picture: {
             type: String,
-        }]
+        }
     },
     graduate_histories: [{
         position: {

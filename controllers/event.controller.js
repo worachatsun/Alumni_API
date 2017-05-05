@@ -53,7 +53,7 @@ exports.getEvent = function(req, res, next) {
         } else {
             res.json(event)
         }
-    })
+    }).sort({created_at: 'desc'})
 }
 
 exports.joinEvent = function(req, res, next) {
@@ -163,5 +163,5 @@ exports.getEventByOffset = function(req, res, next) {
         } else {
             res.json(news)
         }
-    })
+    }).sort({created_at: 'desc'})
 }

@@ -51,7 +51,7 @@ exports.getNews = function(req, res, next) {
         } else {
             res.json(news)
         }
-    })
+    }).sort({created_at: 'desc'})
 }
 
 exports.getNewsByFaculty = function(req, res, next) {
@@ -63,5 +63,5 @@ exports.getNewsByFaculty = function(req, res, next) {
         } else {
             res.json(news)
         }
-    })
+    }).sort({created_at: 'desc'})
 }

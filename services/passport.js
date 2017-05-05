@@ -2,8 +2,10 @@ const passport = require('passport')
 const ExtractJwt = require('passport-jwt').ExtractJwt
 const JwtStrategy = require('passport-jwt').Strategy
 const LocalStrategy = require('passport-local')
+const LdapStrategy = require('passport-ldapauth')
 
 const User = require('mongoose').model('user')
+const Student = require('mongoose').model('student')
 const config = require('../config')
 
 let localOptions = {
@@ -28,7 +30,7 @@ let jwtOptions = {
 }
 
 let jwtStrategy = new JwtStrategy(jwtOptions, function(payload, done) {
-    User.findById(payload.sub, function(err, user) {
+    Student.findById(payload.sub, function(err, user) {
         if (err) { return done(err, false) }
         if (user) {
             done(null, user)
@@ -38,5 +40,31 @@ let jwtStrategy = new JwtStrategy(jwtOptions, function(payload, done) {
     })
 })
 
+let jwtStrategyLdap = new JwtStrategy(jwtOptions, function(payload, done) {
+    Student.findById(payload.sub, function(err, user) {
+        if (err) { return done(err, false) }
+        if (user) {
+            done(null, user)
+        } else {
+            done(null, false)
+        }
+    })
+})
+
+let OPTS = {
+  server: {
+    url: 'ldap://10.1.130.12:389',
+    // bindDn: 'uid=kmuttalumni,ou=admin,dc=kmutt,dc=ac,dc=th',
+    // bindCredentials: 'dgG#5DTFS?UgP',
+    searchBase: 'ou=people,ou=st,dc=kmutt,dc=ac,dc=th',
+    searchFilter: '(uid={{username}})'
+  }
+}
+
+let ldapstrategy = new LdapStrategy(OPTS, function(user, done) {
+    return done(null, user)
+})
+
 passport.use(localStrategy)
 passport.use(jwtStrategy)
+passport.use(ldapstrategy)

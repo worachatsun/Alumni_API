@@ -47,7 +47,7 @@ exports.getCareer = function(req, res, next) {
     Career.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, career){
         if(err) {return next(err)}
         res.json(career)
-    })
+    }).sort({created_at: 'desc'})
 }
 
 exports.getAllCareer = function(req, res, next) {
@@ -57,5 +57,5 @@ exports.getAllCareer = function(req, res, next) {
         } else {
             res.json(career)
         }
-    })
+    }).sort({created_at: 'desc'})
 }

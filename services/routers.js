@@ -5,11 +5,13 @@ const NewsController = require('../controllers/news.controller')
 const EventController = require('../controllers/event.controller')
 const DonateController = require('../controllers/donation.controller')
 const CareerController = require('../controllers/career.controller')
+const InboxController = require('../controllers/inbox.controller')
 const passportService = require('./passport')
 
-var requireAuth = passport.authenticate('jwt', {session: false})
-var requireLogin = passport.authenticate('local', {session: false})
-var router = require('express').Router()
+let requireAuth = passport.authenticate('jwt', {session: false})
+let requireLogin = passport.authenticate('local', {session: false})
+let requireLdapLogin = passport.authenticate('ldapauth', {session: false})
+let router = require('express').Router()
 
 function protected (req, res, next) {
     res.send('Here is the secret!')
@@ -19,6 +21,7 @@ router.route('/protected').get(requireAuth, protected)
 
 router.route('/signup').post(AuthenticationController.signup)
 router.route('/signin').post([requireLogin, AuthenticationController.signin])
+router.route('/signinLdap').post([requireLdapLogin, AuthenticationController.signinLdap])
 router.route('/addFavoriteNews').post(AuthenticationController.updateFavoriteNews)
 router.route('/deleteFavoriteNews').post(AuthenticationController.undoFavoriteNews)
 router.route('/checkFavoriteNews').post(AuthenticationController.checkFavoriteNews)
@@ -45,6 +48,8 @@ router.route('/getDonation').get(DonateController.getAllDonation)
 router.route('/createCareer').post(CareerController.createCareer)
 router.route('/getCareer').get(CareerController.getAllCareer)
 router.route('/getCareer/:offset/:limit').get(CareerController.getCareer)
+
+router.route('/createChatRoom').post(InboxController.createRoomChat)
 
 module.exports = function(app) {
     app.use('/v1', router)

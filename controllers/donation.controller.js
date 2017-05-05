@@ -37,7 +37,7 @@ exports.getDonation = function(req, res, next) {
     Donation.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, data){
         if(err) {return next(err)}
         res.json(data)
-    })
+    }).sort({created_at: 'desc'})
 }
 
 exports.getAllDonation = function(req, res, next) {
@@ -47,5 +47,5 @@ exports.getAllDonation = function(req, res, next) {
         } else {
             res.json(donation)
         }
-    })
+    }).sort({created_at: 'desc'})
 }

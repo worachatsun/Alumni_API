@@ -1,6 +1,7 @@
 const User = require('mongoose').model('user')
 const News = require('mongoose').model('news')
 const Event = require('mongoose').model('event')
+const Student = require('mongoose').model('student')
 const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const config = require('../config')
@@ -15,7 +16,41 @@ function tokenForUser (user) {
 
 exports.signin = function(req, res, next) {
     let user = req.user
+    console.log(user.id)
     res.send({token: tokenForUser(user), user_id: user._id})
+}
+
+exports.signinLdap = function(req, res, next) {
+    let name = req.user.displayName
+    let surname = req.user.givenName
+    let uid = req.user.uid
+    let email = req.user.mail
+    let picture = "https://www4.sit.kmutt.ac.th/files/story_pictures/IMG_0027.jpg"
+    let faculty = req.user.homeDirectory.split("/")[2]
+    if (!uid || !name || !surname) {
+        return res.status(422).json({error: "You must provide an uid, name and surname"})
+    }
+
+    User.findOne({uid}, function(err, existingUser) {
+        if (err) { return next(err) }
+        if (existingUser) { 
+            return res.json({user: existingUser, token: tokenForUser(existingUser)})
+        }
+        let user = new User({
+            uid,
+            name,
+            surname,
+            email,
+            faculty,
+            assets: {
+                picture
+            }
+        })
+        user.save(function(err, user) {
+            if (err) { return next(err) }
+            return res.json({user, token: tokenForUser(user)})
+        })
+    })
 }
 
 exports.signup = function(req, res, next) {
