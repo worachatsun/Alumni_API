@@ -45,8 +45,19 @@ exports.fetchInboxChat = function(req, res, next){
     Inbox.find({ room_id: mongoose.Types.ObjectId(room_id) }, {_id: false, inbox: true}, function(err, inbox) {
         if (err) {
             return next(err)
-        } else {
+        }
+        console.log(inbox)
+        if (inbox[0]) {
             return res.json(inbox[0].inbox.reverse())
+        } else {
+            let inbox = new Inbox({
+                room_id,
+            })
+
+            inbox.save(function(err) {
+                if (err) { return next(err) }
+                res.json(inbox)
+            })
         }
     })
 }
