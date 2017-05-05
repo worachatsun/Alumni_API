@@ -50,6 +50,8 @@ router.route('/getCareer').get(CareerController.getAllCareer)
 router.route('/getCareer/:offset/:limit').get(CareerController.getCareer)
 
 router.route('/createChatRoom').post(InboxController.createRoomChat)
+router.route('/pushChat').post(InboxController.updateInboxChat)
+router.route('/fetchChat').post(InboxController.fetchInboxChat)
 
 module.exports = function(app) {
     app.use('/v1', router)

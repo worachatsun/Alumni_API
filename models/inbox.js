@@ -7,7 +7,7 @@ let inboxSchema = new Schema({
         required: 'Please insert room Id'
     },
     inbox: [{
-        createdAt: String,
+        createdAt: Date,
         text: String,
         user: {
             _id: { type: Schema.ObjectId },
