@@ -18,6 +18,9 @@ var newsSchema = new Schema({
         type: String,
         required: 'Please choose news role'
     },
+    news_favorite: [{
+            type: String
+    }],
     assets: {
         picture: {
             type: String,

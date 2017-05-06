@@ -104,6 +104,11 @@ exports.updateFavoriteNews = function(req, res, next) {
                         return next(err)
                     } else {
                         let favorite = news[0].favorite_news.map((id) => mongoose.Types.ObjectId(id))
+                        News.update(
+                            { _id: mongoose.Types.ObjectId(favorite_news) },
+                            { $push: { news_favorite: mongoose.Types.ObjectId(user_id) }}, function(err) {
+                            if (err) {return next(err)}}
+                        )
                         News.find({ _id: {$in: favorite }}, function(err, favorite_news) {
                             if (err) {
                                 return next(err)
@@ -136,6 +141,11 @@ exports.undoFavoriteNews = function(req, res, next) {
                         return next(err)
                     } else {
                         let favorite = news[0].favorite_news.map((id) => mongoose.Types.ObjectId(id))
+                        News.update(
+                            { _id: mongoose.Types.ObjectId(favorite_news) },
+                            { $pull: { news_favorite: mongoose.Types.ObjectId(user_id) }}, function(err) {
+                            if (err) {return next(err)}}
+                        )
                         News.find({ _id: {$in: favorite }}, function(err, favorite_news) {
                             if (err) {
                                 return next(err)

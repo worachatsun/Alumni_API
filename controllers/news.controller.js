@@ -1,4 +1,5 @@
 const News = require('mongoose').model('news')
+const mongoose = require('mongoose')
 
 exports.createNews = function(req, res, next) {
     let news_title = req.body.news_title
@@ -64,4 +65,15 @@ exports.getNewsByFaculty = function(req, res, next) {
             res.json(news)
         }
     }).sort({created_at: 'desc'})
+}
+
+
+exports.getFavoriteCount = function(req, res, next) {
+    News.find({ _id: mongoose.Types.ObjectId(req.params.id)}, { _id: false, news_favorite: true }, function(err, news) {
+        if (err) {
+            return next(err)
+        } else {
+            return res.json(news[0].news_favorite.length)
+        }
+    })
 }

@@ -32,6 +32,7 @@ router.route('/createNews').post(NewsController.createNews)
 router.route('/getNews/:offset/:limit').get(NewsController.getNewsByOffset)
 router.route('/getNews').get(NewsController.getNews)
 router.route('/getNewsByFaculty/:faculty/:offset/:limit').get(NewsController.getNewsByFaculty)
+router.route('/getFavoriteCount/:id').get(NewsController.getFavoriteCount)
 
 router.route('/joinEvent').post(EventController.joinEvent)
 router.route('/eventAvailable').post(EventController.eventAvailable)
