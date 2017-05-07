@@ -34,9 +34,9 @@ exports.createEvent = function(req, res, next) {
         event_owner: {
             owner_id: event_owner_id
         },
-        assets: [{
+        assets: {
             picture,
-        }],
+        },
         created_by
     })
 
