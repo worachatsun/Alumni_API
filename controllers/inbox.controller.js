@@ -46,7 +46,7 @@ exports.fetchInboxChat = function(req, res, next){
         if (err) {
             return next(err)
         }
-        console.log(inbox)
+        
         if (inbox[0]) {
             return res.json(inbox[0].inbox.reverse())
         } else {

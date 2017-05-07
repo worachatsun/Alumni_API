@@ -2,6 +2,7 @@ const User = require('mongoose').model('user')
 const News = require('mongoose').model('news')
 const Event = require('mongoose').model('event')
 const Student = require('mongoose').model('student')
+const Inbox = require('mongoose').model('inbox')
 const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const config = require('../config')
@@ -48,6 +49,13 @@ exports.signinLdap = function(req, res, next) {
         })
         user.save(function(err, user) {
             if (err) { return next(err) }
+            let inbox = new Inbox({
+                room_id: user._id
+            })
+
+            inbox.save(function(err) {
+                
+            })
             return res.json({user, token: tokenForUser(user)})
         })
     })
