@@ -10,25 +10,21 @@ let donationSchema = new Schema({
         type: String,
         required: 'Please insert donation description'
     },
-    assets: {
-        picture: {
-            type: String,
-            required: 'Please choose cover image'
-        }
+    picture: {
+        type: String,
+        required: 'Please choose cover image'
     },
-    donate: {
-        how_to: {
-            type: String 
+    ways_to_donate: {
+        type: String 
+    },
+    slip_upload: [{
+        user_id: {
+            type: Schema.ObjectId
         },
-        slip_upload: [{
-            user_id: {
-                type: Schema.ObjectId
-            },
-            image_url: {
-                type: String
-            }
-        }]
-    },
+        image_url: {
+            type: String
+        }
+    }],
     created_at: {
         type: Date,
         default: Date.now

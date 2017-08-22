@@ -2,13 +2,8 @@ const News = require('mongoose').model('news')
 const mongoose = require('mongoose')
 
 exports.createNews = function(req, res, next) {
-    let news_title = req.body.news_title
-    let news_text = req.body.news_text
-    let category = req.body.category
-    let news_role = req.body.news_role
-    let picture = req.body.picture
-    let youtube = req.body.youtube
-    let link = req.body.link
+    console.log(req.body)
+    const { news_title, news_text, category, news_role, picture } = req.body
     if (!news_title || !news_text || !category || !news_role) {
         return res.status(422).json({error: "You must provide an data"})
     }
@@ -18,13 +13,7 @@ exports.createNews = function(req, res, next) {
         news_text,
         category,
         news_role,
-        assets: {
-            picture,
-            video:{
-                youtube
-            },
-            link
-        }
+        picture
     })
 
     news.save(function(err) {
@@ -75,5 +64,22 @@ exports.getFavoriteCount = function(req, res, next) {
         } else {
             return res.json(news[0].news_favorite.length)
         }
+    })
+}
+
+exports.getNewsById = function(req, res, next) {
+    News.findById(req.params.id, function(err, news) {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(news)
+        }
+    })
+}
+
+exports.editNews = function(req, res, next) {
+    const { news_title, news_text, news_role, category } = req.body
+    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category}}, {new: true}, (err, news) => {
+        console.log(news)
     })
 }

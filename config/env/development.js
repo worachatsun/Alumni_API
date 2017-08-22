@@ -1,4 +1,4 @@
 module.exports = {
-    mongoUri: 'mongodb://localhost:Alumni/Alumni',
+    mongoUri: 'mongodb://localhost/Alumni',
     debug: true
 }

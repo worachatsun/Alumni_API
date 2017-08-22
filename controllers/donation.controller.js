@@ -2,11 +2,8 @@ const Donation = require('mongoose').model('donation')
 const mongoose = require('mongoose')
 
 exports.createDonation = function(req, res, next) {
-    let project_name = req.body.project_name
-    let project_description = req.body.project_description
-    let picture = req.body.picture
-    let how_to = req.body.how_to
-    let created_by = req.body.created_by
+    const { project_description, project_name, picture, ways_to_donate, created_by } = req.body
+    console.log(req.body)
 
     if (!project_name || !project_description || !picture || !created_by) {
         return res.status(422).json({error: "You must provide an data"})
@@ -15,12 +12,8 @@ exports.createDonation = function(req, res, next) {
     let donation = new Donation({
         project_name,
         project_description,
-        assets: {
-            picture
-        },
-        donate: {
-            how_to,
-        },
+        picture,
+        ways_to_donate,
         created_by
     })
 
@@ -48,4 +41,21 @@ exports.getAllDonation = function(req, res, next) {
             res.json(donation)
         }
     }).sort({created_at: 'desc'})
+}
+
+exports.getDonationById = function(req, res, next) {
+    Donation.findById(req.params.id, function(err, donate) {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(donate)
+        }
+    })
+}
+
+exports.editDonation = function(req, res, next) {
+    const { _id, project_description, project_name } = req.body
+    Donation.findByIdAndUpdate(_id, {$set: {project_description, project_name}}, {new: true}, (err, donate) => {
+        console.log(donate)
+    })
 }

@@ -3,22 +3,30 @@ const User = require('mongoose').model('user')
 const mongoose = require('mongoose')
 
 exports.createEvent = function(req, res, next) {
-    let event_name = req.body.event_name
-    let event_description = req.body.event_description
-    let person_limit = req.body.person_limit
-    let regis_date_begin = req.body.regis_date_begin
-    let regis_date_end = req.body.regis_date_end
-    let event_date_begin = req.body.event_date_begin
-    let event_date_end = req.body.event_date_end
-    let location = req.body.location
-    let event_owner_id = req.body.event_owner_id
-    let coupon = req.body.event_coupon
-    let picture = req.body.picture
-    let created_by = req.body.created_by
-    if (!event_name || !event_description || !person_limit || !created_by) {
-        return res.status(422).json({error: "You must provide an data"})
-    }
-
+    const { 
+        event_name, 
+        event_description, 
+        person_limit, 
+        regis_date_begin, 
+        regis_date_end, 
+        event_date_begin, 
+        event_date_end,
+        location,
+        event_owner_id,
+        event_owner_name,
+        event_owner_surname,
+        event_owner_tel,
+        event_owner_email,
+        event_owner_facebook,
+        event_owner_line,
+        picture,
+        created_by
+    } = req.body
+    //let coupon = req.body.event_coupon
+    // if (!event_name || !event_description || !person_limit || !created_by) {
+    //     return res.status(422).json({error: "You must provide an data"})
+    // }
+    
     let event = new Event({
         event_name,
         event_description,
@@ -28,15 +36,19 @@ exports.createEvent = function(req, res, next) {
         event_date_begin,
         event_date_end,
         location,
-        coupon_available: [
-            coupon
-        ],
+        // coupon_available: [
+        //     coupon
+        // ],
         event_owner: {
-            owner_id: event_owner_id
+            id: event_owner_id,
+            name: event_owner_name,
+            surname: event_owner_surname,
+            phone: event_owner_tel,
+            email: event_owner_email,
+            facebook: event_owner_facebook,
+            line: event_owner_line
         },
-        assets: {
-            picture,
-        },
+        picture,
         created_by
     })
 
@@ -164,4 +176,22 @@ exports.getEventByOffset = function(req, res, next) {
             res.json(news)
         }
     }).sort({created_at: 'desc'})
+}
+
+exports.getEventsById = function(req, res, next) {
+    Event.findById(req.params.id, function(err, events) {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(events)
+        }
+    })
+}
+
+exports.editEvent = function(req, res, next) {
+    console.log(req.body)
+    const { person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location, _id } = req.body
+    Event.findByIdAndUpdate(_id, {$set: {person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location}}, {new: true}, (err, event) => {
+        console.log(event)
+    })
 }

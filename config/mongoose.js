@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 
 module.exports = function() {
     mongoose.set('debug', config.debug)
-    let db = mongoose.connect(config.mongoUri)
+    let db = mongoose.connect(config.mongoUri, {
+        useMongoClient: true
+    })
     
     require('../models/user')
     require('../models/news')

@@ -59,3 +59,20 @@ exports.getAllCareer = function(req, res, next) {
         }
     }).sort({created_at: 'desc'})
 }
+
+exports.getCareerById = function(req, res, next) {
+    Career.findById(req.params.id, function(err, career) {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(career)
+        }
+    })
+}
+
+exports.editCareer = function(req, res, next) {
+    const { _id, career_description, career_name, company, position, qualification, salary } = req.body
+    Career.findByIdAndUpdate(_id, {$set: {career_description, career_name, company, position, qualification, salary}}, {new: true}, (err, career) => {
+        console.log(career)
+    })
+}

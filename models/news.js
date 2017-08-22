@@ -21,18 +21,8 @@ var newsSchema = new Schema({
     news_favorite: [{
             type: String
     }],
-    assets: {
-        picture: {
-            type: String,
-        },
-        video: {
-            youtube: {
-                type: String
-            }
-        },
-        link: {
-            type: String
-        }
+    picture: {
+        type: String,
     },
     created_at: {
         type: Date,

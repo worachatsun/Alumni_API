@@ -8,6 +8,7 @@ const express = require('./config/express')
 const db = mongoose()
 const app = express()
 
-app.listen(PORT,HOST)
+const server = app.listen(PORT,HOST)
+const io = require('./config/socketio')(server, db)
 
 console.log('Listening on', HOST, PORT)

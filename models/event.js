@@ -35,15 +35,32 @@ var eventSchema = new Schema({
         required: 'Please insert location'
     },
     event_owner: {
-        owner_id: {
+        id: {
+            type: String,
+        },
+        name: {
             type: String,
             required: 'Please insert event owner'
+        },
+        surname: {
+            type: String,
+            required: 'Please insert event owner'
+        },
+        email: {
+            type: String,
+        },
+        facebook: {
+            type: String,
+        },
+        phone: {
+            type: String,
+        },
+        line: {
+            type: String,
         }
     },
-    assets: {
-        picture: [{
-            type: String,
-        }]
+    picture: {
+        type: String,
     },
     event_joiner: [{
             type: String
