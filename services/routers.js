@@ -1,4 +1,6 @@
 const passport = require('passport')
+const multer = require('multer')
+const upload = multer({ dest: 'public/uploads/' })
 
 const AuthenticationController = require('../controllers/authentication.controller')
 const NewsController = require('../controllers/news.controller')
@@ -6,6 +8,7 @@ const EventController = require('../controllers/event.controller')
 const DonateController = require('../controllers/donation.controller')
 const CareerController = require('../controllers/career.controller')
 const InboxController = require('../controllers/inbox.controller')
+const UserController = require('../controllers/user.controller')
 const passportService = require('./passport')
 
 let requireAuth = passport.authenticate('jwt', {session: false})
@@ -28,6 +31,9 @@ router.route('/checkFavoriteNews').post(AuthenticationController.checkFavoriteNe
 router.route('/getAllFavoriteNews/:id').get(AuthenticationController.getAllFavoriteNews)
 router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
 
+router.route('/getAllUser').get(UserController.getAllUser)
+router.route('/getUserById/:id').get(UserController.getUserById)
+
 router.route('/createNews').post(NewsController.createNews)
 router.route('/getNews/:offset/:limit').get(NewsController.getNewsByOffset)
 router.route('/getNews').get(NewsController.getNews)
@@ -35,6 +41,7 @@ router.route('/getNewsByFaculty/:faculty/:offset/:limit').get(NewsController.get
 router.route('/getFavoriteCount/:id').get(NewsController.getFavoriteCount)
 router.route('/getNewsById/:id').get(NewsController.getNewsById)
 router.route('/editNews').post(NewsController.editNews)
+router.route('/removeNews').post(NewsController.removeNews)
 
 router.route('/joinEvent').post(EventController.joinEvent)
 router.route('/eventAvailable').post(EventController.eventAvailable)
@@ -45,22 +52,33 @@ router.route('/getEvent/:offset/:limit').get(EventController.getEventByOffset)
 router.route('/createEvent').post(EventController.createEvent)
 router.route('/getEventsById/:id').get(EventController.getEventsById)
 router.route('/editEvent').post(EventController.editEvent)
+router.route('/removeEvent').post(EventController.removeEvent)
 
 router.route('/createDonation').post(DonateController.createDonation)
 router.route('/getDonation/:offset/:limit').get(DonateController.getDonation)
 router.route('/getDonation').get(DonateController.getAllDonation)
 router.route('/getDonationById/:id').get(DonateController.getDonationById)
 router.route('/editDonation').post(DonateController.editDonation)
+router.route('/removeDonation').post(DonateController.removeDonation)
 
 router.route('/createCareer').post(CareerController.createCareer)
 router.route('/getCareer').get(CareerController.getAllCareer)
 router.route('/getCareer/:offset/:limit').get(CareerController.getCareer)
 router.route('/getCareerById/:id').get(CareerController.getCareerById)
 router.route('/editCareer').post(CareerController.editCareer)
+router.route('/removeCareer').post(CareerController.removeCareer)
 
 router.route('/createChatRoom').post(InboxController.createRoomChat)
 router.route('/pushChat').post(InboxController.updateInboxChat)
 router.route('/fetchChat').post(InboxController.fetchInboxChat)
+
+router.post('/upload', upload.single('cover'), function (req, res, next) {
+    try {
+        res.json({ status: 'success' })
+    } catch (err) {
+        res.sendStatus(400)
+    }
+})
 
 module.exports = function(app) {
     app.use('/v1', router)

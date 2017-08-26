@@ -40,7 +40,6 @@ exports.createEvent = function(req, res, next) {
         //     coupon
         // ],
         event_owner: {
-            id: event_owner_id,
             name: event_owner_name,
             surname: event_owner_surname,
             phone: event_owner_tel,
@@ -192,6 +191,24 @@ exports.editEvent = function(req, res, next) {
     console.log(req.body)
     const { person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location, _id } = req.body
     Event.findByIdAndUpdate(_id, {$set: {person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location}}, {new: true}, (err, event) => {
-        console.log(event)
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(event)
+        }
+    })
+}
+
+exports.removeEvent = function(req, res) {
+    const { array_id } = req.body
+    Event.remove({_id: {$in: array_id}}, function(err) {
+        if (err) { return next(err) }
+        Event.find({}, function(err, event) {
+            if (err) {
+                return next(err)
+            } else {
+                return res.json(event)
+            }
+        }).sort({created_at: 'desc'})
     })
 }

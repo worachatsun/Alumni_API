@@ -25,6 +25,26 @@ let donationSchema = new Schema({
             type: String
         }
     }],
+    project_owner: {
+        name: {
+            type: String
+        },
+        surname: {
+            type: String
+        },
+        email: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        phone: {
+            type: String
+        },
+        line: {
+            type: String
+        }
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -37,6 +57,9 @@ let donationSchema = new Schema({
         type: Schema.ObjectId,
         required: 'Please insert creater'
     },
+    expiry_date: {
+        type: Date,
+    }
 })
 
 module.exports = mongoose.model('donation', donationSchema)

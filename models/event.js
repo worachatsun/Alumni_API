@@ -35,28 +35,23 @@ var eventSchema = new Schema({
         required: 'Please insert location'
     },
     event_owner: {
-        id: {
-            type: String,
-        },
         name: {
-            type: String,
-            required: 'Please insert event owner'
+            type: String
         },
         surname: {
-            type: String,
-            required: 'Please insert event owner'
+            type: String
         },
         email: {
-            type: String,
+            type: String
         },
         facebook: {
-            type: String,
+            type: String
         },
         phone: {
-            type: String,
+            type: String
         },
         line: {
-            type: String,
+            type: String
         }
     },
     picture: {
@@ -79,7 +74,7 @@ var eventSchema = new Schema({
     created_by: {
         type: Schema.ObjectId,
         required: 'Please insert creater'
-    },
+    }
 })
 
 module.exports = mongoose.model('event', eventSchema)

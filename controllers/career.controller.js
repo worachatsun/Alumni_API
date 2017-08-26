@@ -2,36 +2,49 @@ const Career = require('mongoose').model('career')
 const mongoose = require('mongoose')
 
 exports.createCareer = function(req, res, next) {
-    let career_name = req.body.career_name
-    let career_description = req.body.career_description
-    let qualification = req.body.qualification
-    let company = req.body.company
-    let capacity = req.body.capacity
-    let salary = req.body.salary
-    let created_by_id = req.body.created_by_id
-    let created_by_name = req.body.created_by_name
-    let picture = req.body.picture
-    let position = req.body.position
+    const { 
+        career_name, 
+        career_description, 
+        qualification, 
+        company, 
+        capacity, 
+        salary, 
+        picture, 
+        created_by, 
+        position, 
+        expiry_date,
+        career_owner_surname,
+        career_owner_name,
+        career_owner_tel,
+        career_owner_facebook,
+        career_owner_line,
+        career_owner_email
+     } = req.body
+    console.log(req.body)
 
-    if (!career_name || !position || !career_description || !qualification || !company || !created_by_id || !created_by_name) {
+    if (!career_name || !career_description || !qualification || !company || !created_by) {
         return res.status(422).json({error: "You must provide an data"})
     }
 
     let career = new Career({
         career_name,
         career_description,
-        assets: {
-            picture
-        },
+        picture,
         capacity,
         position,
         qualification,
         company,
         salary,
-        created_by: {
-            _id: created_by_id,
-            name: created_by_name
-        }
+        created_by,
+        expiry_date,
+        career_owner: {
+            name: career_owner_name,
+            surname: career_owner_surname,
+            phone: career_owner_tel,
+            email: career_owner_email,
+            facebook: career_owner_facebook,
+            line: career_owner_line
+        },
     })
 
     career.save(function(err) {
@@ -71,8 +84,20 @@ exports.getCareerById = function(req, res, next) {
 }
 
 exports.editCareer = function(req, res, next) {
-    const { _id, career_description, career_name, company, position, qualification, salary } = req.body
-    Career.findByIdAndUpdate(_id, {$set: {career_description, career_name, company, position, qualification, salary}}, {new: true}, (err, career) => {
-        console.log(career)
+    const { _id, career_description, expiry_date, career_name, company, position, qualification, salary } = req.body
+    Career.findByIdAndUpdate(_id, {$set: {career_description, expiry_date, career_name, company, position, qualification, salary}}, {new: true}, (err, career) => {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(career)
+        }
+    })
+}
+
+exports.removeCareer = function(req, res) {
+    const { array_id } = req.body
+    Career.remove({_id: {$in: array_id}}, function(err) {
+        if (err) { return next(err) }
+        return res.json({ status: 'success' })
     })
 }

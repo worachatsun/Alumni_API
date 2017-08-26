@@ -15,8 +15,7 @@ let carrerSchema = new Schema({
         required: 'Please insert Qualification'
     },
     position: {
-        type: String,
-        required: 'Please insert Position'
+        type: String
     },
     company: {
         type: String,
@@ -36,11 +35,29 @@ let carrerSchema = new Schema({
             type: String,
         }
     }],
-    assets: {
-        picture: {
-            type: String,
-            required: 'Please choose cover image'
+    career_owner: {
+        name: {
+            type: String
+        },
+        surname: {
+            type: String
+        },
+        email: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        phone: {
+            type: String
+        },
+        line: {
+            type: String
         }
+    },
+    picture: {
+        type: String,
+        required: 'Please choose cover image'
     },
     created_at: {
         type: Date,
@@ -51,15 +68,12 @@ let carrerSchema = new Schema({
         default: Date.now
     },
     created_by: {
-        _id: {
-            type: Schema.ObjectId,
-            required: 'Please insert creater'
-        },
-        name: {
-            type: String,
-            required: 'Please insert creater name'
-        }
+        type: Schema.ObjectId,
+        required: 'Please insert creater'
     },
+    expiry_date: {
+        type: Date,
+    }
 })
 
 module.exports = mongoose.model('career', carrerSchema)

@@ -24,6 +24,26 @@ var newsSchema = new Schema({
     picture: {
         type: String,
     },
+    news_owner: {
+        name: {
+            type: String
+        },
+        surname: {
+            type: String
+        },
+        email: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        phone: {
+            type: String
+        },
+        line: {
+            type: String
+        }
+    },
     created_at: {
         type: Date,
         default: Date.now
@@ -31,6 +51,9 @@ var newsSchema = new Schema({
     updated_at: {
         type: Date,
         default: Date.now
+    },
+    expiry_date: {
+        type: Date,
     }
 })
 

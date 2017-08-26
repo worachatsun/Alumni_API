@@ -3,7 +3,20 @@ const mongoose = require('mongoose')
 
 exports.createNews = function(req, res, next) {
     console.log(req.body)
-    const { news_title, news_text, category, news_role, picture } = req.body
+    const { 
+        news_title, 
+        news_text, 
+        category, 
+        news_role, 
+        picture, 
+        expiry_date,
+        news_owner_surname,
+        news_owner_name,
+        news_owner_tel,
+        news_owner_facebook,
+        news_owner_line,
+        news_owner_email
+    } = req.body
     if (!news_title || !news_text || !category || !news_role) {
         return res.status(422).json({error: "You must provide an data"})
     }
@@ -13,7 +26,16 @@ exports.createNews = function(req, res, next) {
         news_text,
         category,
         news_role,
-        picture
+        picture,
+        expiry_date,
+        news_owner: {
+            name: news_owner_name,
+            surname: news_owner_surname,
+            phone: news_owner_tel,
+            email: news_owner_email,
+            facebook: news_owner_facebook,
+            line: news_owner_line,
+        }
     })
 
     news.save(function(err) {
@@ -78,8 +100,20 @@ exports.getNewsById = function(req, res, next) {
 }
 
 exports.editNews = function(req, res, next) {
-    const { news_title, news_text, news_role, category } = req.body
-    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category}}, {new: true}, (err, news) => {
-        console.log(news)
+    const { news_title, news_text, news_role, category, expiry_date } = req.body
+    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category, expiry_date}}, {new: true}, (err, news) => {
+        if (err) {  
+            return next(err)
+        } else {
+            return res.json(news)
+        }
+    })
+}
+
+exports.removeNews = function(req, res) {
+    const { array_id } = req.body
+    News.remove({_id: {$in: array_id}}, function(err) {
+        if (err) { return next(err) }
+        return res.json({ status: 'success' })
     })
 }
