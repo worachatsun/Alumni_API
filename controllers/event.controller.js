@@ -12,7 +12,6 @@ exports.createEvent = function(req, res, next) {
         event_date_begin, 
         event_date_end,
         location,
-        event_owner_id,
         event_owner_name,
         event_owner_surname,
         event_owner_tel,
@@ -189,8 +188,28 @@ exports.getEventsById = function(req, res, next) {
 
 exports.editEvent = function(req, res, next) {
     console.log(req.body)
-    const { person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location, _id } = req.body
-    Event.findByIdAndUpdate(_id, {$set: {person_limit, event_name, event_description, regis_date_begin, regis_date_end, event_date_begin, event_date_end, location}}, {new: true}, (err, event) => {
+    const { 
+        person_limit, 
+        event_name, 
+        event_description, 
+        regis_date_begin, 
+        regis_date_end, 
+        event_date_begin, 
+        event_date_end, 
+        location, 
+        _id,
+        event_owner_name,
+        event_owner_surname,
+        event_owner_tel,
+        event_owner_email,
+        event_owner_facebook,
+        event_owner_line,
+    } = req.body
+    Event.findByIdAndUpdate(_id, {
+        $set: {person_limit, event_name, event_description, regis_date_begin, 
+            regis_date_end, event_date_begin, event_date_end, location, 
+            event_owner: {name: event_owner_name, surname: event_owner_surname, phone: event_owner_tel, line: event_owner_line, facebook: event_owner_facebook, email: event_owner_email}}}
+        , {new: true}, (err, event) => {
         if (err) {  
             return next(err)
         } else {

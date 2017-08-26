@@ -84,8 +84,24 @@ exports.getCareerById = function(req, res, next) {
 }
 
 exports.editCareer = function(req, res, next) {
-    const { _id, career_description, expiry_date, career_name, company, position, qualification, salary } = req.body
-    Career.findByIdAndUpdate(_id, {$set: {career_description, expiry_date, career_name, company, position, qualification, salary}}, {new: true}, (err, career) => {
+    const { 
+        _id, 
+        career_description, 
+        expiry_date, 
+        career_name, 
+        company, 
+        position, 
+        qualification, 
+        salary,
+        career_owner_surname,
+        career_owner_name,
+        career_owner_tel,
+        career_owner_facebook,
+        career_owner_line,
+        career_owner_email
+    } = req.body
+    Career.findByIdAndUpdate(_id, {$set: {career_description, expiry_date, career_name, company, position, qualification, salary,
+            career_owner: {name: career_owner_name, surname: career_owner_surname, phone: career_owner_tel, line: career_owner_line, facebook: career_owner_facebook, email: career_owner_email}}}, {new: true}, (err, career) => {
         if (err) {  
             return next(err)
         } else {

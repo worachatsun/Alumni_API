@@ -100,8 +100,21 @@ exports.getNewsById = function(req, res, next) {
 }
 
 exports.editNews = function(req, res, next) {
-    const { news_title, news_text, news_role, category, expiry_date } = req.body
-    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category, expiry_date}}, {new: true}, (err, news) => {
+    const { 
+        news_title, 
+        news_text, 
+        news_role, 
+        category, 
+        expiry_date,
+        news_owner_surname,
+        news_owner_name,
+        news_owner_tel,
+        news_owner_facebook,
+        news_owner_line,
+        news_owner_email
+    } = req.body
+    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category,
+        news_owner: {name: news_owner_name, surname: news_owner_surname, phone: news_owner_tel, line: news_owner_line, facebook: news_owner_facebook, email: news_owner_email}}}, {new: true}, (err, news) => {
         if (err) {  
             return next(err)
         } else {
