@@ -14,6 +14,7 @@ module.exports = function() {
     require('../models/career')
     require('../models/student')
     require('../models/inbox')
+    require('../models/admin')
 
     return db
 }

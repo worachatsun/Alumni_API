@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const cors = require('cors')
+const path = require('path')
 
 module.exports = function () {
     let app = express()
@@ -16,7 +17,7 @@ module.exports = function () {
     }))
     app.use(bodyParser.json())
     app.use(cors())
-
+    app.use('/static', express.static(path.join(__dirname + '/../public')))
 
     require('../services/routers')(app)
     return app

@@ -86,9 +86,10 @@ exports.editDonation = function(req, res, next) {
         donate_owner_tel,
         donate_owner_facebook,
         donate_owner_line,
-        donate_owner_email
+        donate_owner_email,
+        picture
     } = req.body
-    Donation.findByIdAndUpdate(_id, {$set: {project_description, project_name, ways_to_donate, expiry_date,
+    Donation.findByIdAndUpdate(_id, {$set: {project_description, project_name, ways_to_donate, expiry_date, picture,
         project_owner: {name: donate_owner_name, surname: donate_owner_surname, phone: donate_owner_tel, line: donate_owner_line, facebook: donate_owner_facebook, email: donate_owner_email}}}, {new: true}, (err, donate) => {
         if (err) {  
             return next(err)

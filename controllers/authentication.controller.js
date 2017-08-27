@@ -1,24 +1,63 @@
 const User = require('mongoose').model('user')
+const Admin = require('mongoose').model('admin')
 const News = require('mongoose').model('news')
 const Event = require('mongoose').model('event')
 const Student = require('mongoose').model('student')
 const Inbox = require('mongoose').model('inbox')
 const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
+const bcrypt = require('bcrypt')
 const config = require('../config')
 
 function tokenForUser (user) {
+    const {_id, uid, name, surname, assets} = user
     let timestamp = new Date().getTime()
     return jwt.encode({
-        sub: user.id,
+        user: user,
         iat: timestamp
     }, config.secret)
 }
 
 exports.signin = function(req, res, next) {
     let user = req.user
-    console.log(user.id)
     res.send({token: tokenForUser(user), user_id: user._id})
+}
+
+exports.adminSignin = function(req, res, next) {
+    const { username, password } = req.body 
+
+    Admin.findOne({username}, (err, user) => {
+        if(err) { return res.json(err) }
+        if(user) {
+            bcrypt.compare(password, user.password, (err, isValid) => {
+                if(isValid) {
+                    const dataCreateToken = Object.assign({}, user)
+                    delete dataCreateToken._doc.password
+                    return res.json({ token: tokenForUser(dataCreateToken._doc), user: dataCreateToken._doc })
+                }else
+                    return res.json('Incorrect password') 
+            })
+        }else
+            return res.json('Incorrect username or email') 
+    })
+}
+
+exports.adminRegister = (req, res) => {
+    const { username, password } = req.body 
+
+    const admin = new Admin({
+        username
+    })
+
+    bcrypt.hash(password, 10).then((hash) => {
+        admin.password = hash
+        admin.save((err, user) => {
+            if(err) { return res.json(err) }
+            const dataCreateToken = Object.assign({}, user)
+            delete dataCreateToken._doc.password
+            return res.json({ token: tokenForUser(dataCreateToken._doc), user: dataCreateToken._doc }).code(201)
+        })
+    })
 }
 
 exports.signinLdap = function(req, res, next) {
@@ -26,6 +65,7 @@ exports.signinLdap = function(req, res, next) {
     let surname = req.user.givenName
     let uid = req.user.uid
     let email = req.user.mail
+    let role = 'alumni'
     let picture = "https://www4.sit.kmutt.ac.th/files/story_pictures/IMG_0027.jpg"
     let faculty = req.user.homeDirectory.split("/")[2]
     if (!uid || !name || !surname) {
@@ -34,14 +74,16 @@ exports.signinLdap = function(req, res, next) {
 
     User.findOne({uid}, function(err, existingUser) {
         if (err) { return next(err) }
+        const {_id, uid, name, surname, assets} = existingUser
         if (existingUser) { 
-            return res.json({user: existingUser, token: tokenForUser(existingUser)})
+            return res.json({user: existingUser, token: tokenForUser({_id, uid, name, surname, assets})})
         }
         let user = new User({
             uid,
             name,
             surname,
             email,
+            role,
             faculty,
             assets: {
                 picture

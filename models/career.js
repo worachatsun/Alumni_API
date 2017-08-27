@@ -56,8 +56,7 @@ let carrerSchema = new Schema({
         }
     },
     picture: {
-        type: String,
-        required: 'Please choose cover image'
+        type: String
     },
     created_at: {
         type: Date,

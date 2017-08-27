@@ -1,6 +1,6 @@
 const passport = require('passport')
 const multer = require('multer')
-const upload = multer({ dest: 'public/uploads/' })
+//const upload = multer({ dest: 'public/uploads/' })
 
 const AuthenticationController = require('../controllers/authentication.controller')
 const NewsController = require('../controllers/news.controller')
@@ -9,6 +9,7 @@ const DonateController = require('../controllers/donation.controller')
 const CareerController = require('../controllers/career.controller')
 const InboxController = require('../controllers/inbox.controller')
 const UserController = require('../controllers/user.controller')
+const AdminController = require('../controllers/admin.controller')
 const passportService = require('./passport')
 
 let requireAuth = passport.authenticate('jwt', {session: false})
@@ -23,7 +24,9 @@ function protected (req, res, next) {
 router.route('/protected').get(requireAuth, protected)
 
 router.route('/signup').post(AuthenticationController.signup)
+router.route('/adminSignup').post(AuthenticationController.adminRegister)
 router.route('/signin').post([requireLogin, AuthenticationController.signin])
+router.route('/adminSignin').post( AuthenticationController.adminSignin)
 router.route('/signinLdap').post([requireLdapLogin, AuthenticationController.signinLdap])
 router.route('/addFavoriteNews').post(AuthenticationController.updateFavoriteNews)
 router.route('/deleteFavoriteNews').post(AuthenticationController.undoFavoriteNews)
@@ -33,6 +36,9 @@ router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
 
 router.route('/getAllUser').get(UserController.getAllUser)
 router.route('/getUserById/:id').get(UserController.getUserById)
+router.route('/getUserData').post(UserController.getUserData)
+
+router.route('/getAdminData').post(AdminController.getAdminData)
 
 router.route('/createNews').post(NewsController.createNews)
 router.route('/getNews/:offset/:limit').get(NewsController.getNewsByOffset)
@@ -72,13 +78,32 @@ router.route('/createChatRoom').post(InboxController.createRoomChat)
 router.route('/pushChat').post(InboxController.updateInboxChat)
 router.route('/fetchChat').post(InboxController.fetchInboxChat)
 
-router.post('/upload', upload.single('cover'), function (req, res, next) {
-    try {
-        res.json({ status: 'success' })
-    } catch (err) {
-        res.sendStatus(400)
-    }
+router.route('/upload/').post(function(req, res) {
+    let img = ''
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'public/uploads/')
+        },
+        filename: function (req, file, cb) {
+            const fn = file.originalname.split('.')
+            img = `${fn[0]}-${Date.now()}.${fn[fn.length-1]}`
+            cb(null, img)
+        }
+    })
+    const upload = multer({ storage: storage }).single('cover')
+	upload(req, res, function(err) {
+        if(err) {return console.log(err)}
+		res.json({ img: `static/uploads/${img}` })
+	})
 })
+
+// router.post('/upload', upload.single('cover'), function (req, res, next) {
+//     try {
+//         res.json({ status: 'success' })
+//     } catch (err) {
+//         res.sendStatus(400)
+//     }
+// })
 
 module.exports = function(app) {
     app.use('/v1', router)
