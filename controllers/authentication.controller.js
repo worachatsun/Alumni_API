@@ -74,32 +74,33 @@ exports.signinLdap = function(req, res, next) {
 
     User.findOne({uid}, function(err, existingUser) {
         if (err) { return next(err) }
-        const {_id, uid, name, surname, assets} = existingUser
         if (existingUser) { 
+            const {_id, uid, name, surname, assets} = existingUser
             return res.json({user: existingUser, token: tokenForUser({_id, uid, name, surname, assets})})
+        }else{
+            let user = new User({
+                uid,
+                name,
+                surname,
+                email,
+                role,
+                faculty,
+                assets: {
+                    picture
+                }
+            })
+            user.save(function(err, user) {
+                if (err) { return next(err) }
+                let inbox = new Inbox({
+                    room_id: user._id
+                })
+    
+                inbox.save(function(err) {
+                    
+                })
+                return res.json({user, token: tokenForUser(user)})
+            })
         }
-        let user = new User({
-            uid,
-            name,
-            surname,
-            email,
-            role,
-            faculty,
-            assets: {
-                picture
-            }
-        })
-        user.save(function(err, user) {
-            if (err) { return next(err) }
-            let inbox = new Inbox({
-                room_id: user._id
-            })
-
-            inbox.save(function(err) {
-                
-            })
-            return res.json({user, token: tokenForUser(user)})
-        })
     })
 }
 

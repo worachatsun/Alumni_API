@@ -47,13 +47,15 @@ exports.createNews = function(req, res, next) {
 exports.getNewsByOffset = function(req, res, next) {
     let limit = req.params.offset || 0
     let offset = req.params.limit || 10
-    News.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit) }, function(err, news) {
+    const now = new Date().toISOString()
+    console.log(new Date())
+    News.find({}, {}, { skip: parseInt(req.params.offset), limit: parseInt(req.params.limit), expiry_date: {$gte: new Date()} }, function(err, news) {
         if (err) {
             return next(err)
         } else {
             res.json(news)
         }
-    })
+    }).sort({created_at: 'desc'})
 }
 
 exports.getNews = function(req, res, next) {
@@ -113,7 +115,7 @@ exports.editNews = function(req, res, next) {
         news_owner_line,
         news_owner_email
     } = req.body
-    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category,
+    News.findByIdAndUpdate(req.body._id, {$set: {news_title, news_text, news_role, category, expiry_date,
         news_owner: {name: news_owner_name, surname: news_owner_surname, phone: news_owner_tel, line: news_owner_line, facebook: news_owner_facebook, email: news_owner_email}}}, {new: true}, (err, news) => {
         if (err) {  
             return next(err)
