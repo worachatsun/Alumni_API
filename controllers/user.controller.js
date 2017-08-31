@@ -30,8 +30,10 @@ exports.getUserData = (req, res, next) => {
         } catch (e) {
             return res.json({auth: 'Unauthorized'})
         }
-        User.findOne({ _id: decoded._id }, (err, user) => {
+        console.log(decoded.user._id)
+        User.findOne({ _id: decoded.user._id }, (err, user) => {
             if(err) { return next(err) }
+            console.log(user)
             return res.json({user})
         })
     }else{
