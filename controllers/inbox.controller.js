@@ -61,3 +61,21 @@ exports.fetchInboxChat = function(req, res, next){
         }
     })
 }
+
+exports.getAllChat = (req, res, next) => {
+    Inbox.find({}).select({ "inbox": { "$slice": -1 }}).exec((err, rooms) => {
+        if(err) { res.json(err) }
+        res.json(rooms)
+    })
+}
+
+exports.getRoomChatById = function(req, res, next) {
+    let id = req.params.id
+    Inbox.findById(id, 'inbox', function(err, room) {
+        if (err) {
+            return next(err)
+        } else {
+            res.json(room)
+        }
+    })
+}

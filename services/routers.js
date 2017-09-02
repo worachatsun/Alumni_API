@@ -77,6 +77,8 @@ router.route('/removeCareer').post(CareerController.removeCareer)
 router.route('/createChatRoom').post(InboxController.createRoomChat)
 router.route('/pushChat').post(InboxController.updateInboxChat)
 router.route('/fetchChat').post(InboxController.fetchInboxChat)
+router.route('/getAllChat').get(InboxController.getAllChat)
+router.route('/getRoomChat/:id').get(InboxController.getRoomChatById)
 
 router.route('/upload/').post(function(req, res) {
     let img = ''
