@@ -71,7 +71,7 @@ exports.getAllChat = (req, res, next) => {
 
 exports.getRoomChatById = function(req, res, next) {
     let id = req.params.id
-    Inbox.findById(id, 'inbox', function(err, room) {
+    Inbox.findById(id, ['inbox', 'room_id'], function(err, room) {
         if (err) {
             return next(err)
         } else {
