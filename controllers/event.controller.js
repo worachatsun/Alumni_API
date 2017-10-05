@@ -69,7 +69,8 @@ exports.getEvent = function(req, res, next) {
 exports.joinEvent = function(req, res, next) {
     let join_event = req.body.join_event
     let user_id = req.body.user_id
-    Event.find({ _id: mongoose.Types.ObjectId(join_event), event_joiner: {$in: [user_id]}}, function(err, event_data) {
+    let capacity = req.body.capacity
+    Event.find({ _id: mongoose.Types.ObjectId(join_event), event_joiner: {$elemMatch: {user_id: user_id}}}, function(err, event_data) {
         if(err) {return next(err)}
         if(event_data[0]){
             res.json('joined') 
@@ -83,12 +84,17 @@ exports.joinEvent = function(req, res, next) {
                         if (err) {
                             return next(err)
                         } else {
+                            // const a = person_limit[0].event_joiner.map(data => data.capacity).reduce((sum, cur) => {
+                            //     return sum + cur
+                            // })
+                            // console.log(a)
+                            
                             if(person_limit[0].event_joiner.length > parseInt(person_limit[0].person_limit)){
-                                res.json('Out of length')
+                                return res.json('Out of length')
                             }else{
                                 Event.update(
                                     { _id: mongoose.Types.ObjectId(join_event) },
-                                    { $push: { event_joiner: mongoose.Types.ObjectId(user_id) }},
+                                    { $push: { event_joiner: {user_id: mongoose.Types.ObjectId(user_id), capacity} }},
                                     function(err) {
                                         if (err) { return next(err) }
                                     }
@@ -129,10 +135,11 @@ exports.eventAvailable = function(req, res, next) {
         if (err) {
             return next(err)
         } else {
+            console.log(person_limit[0].event_joiner.length, parseInt(person_limit[0].person_limit), 'naja')
             if(person_limit[0].event_joiner.length > parseInt(person_limit[0].person_limit)){
-                res.json(false)
+                return res.json(false)
             }
-            res.json(true)
+            return res.json(true)
         }
     })
 }

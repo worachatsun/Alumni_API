@@ -2,7 +2,6 @@ const News = require('mongoose').model('news')
 const mongoose = require('mongoose')
 
 exports.createNews = function(req, res, next) {
-    console.log(req.body)
     const { 
         news_title, 
         news_text, 

@@ -13,7 +13,6 @@ module.exports = (server, db) => {
                 userinfo.socketId = socket.id
                 users.push(userinfo)
                 socket.join(userinfo.id)
-                io.to(userinfo.id).emit('getMsg', userinfo)
             }else{
                 const add_user = users.filter(user => user.id === userinfo.id)
                 if(!add_user.length){

@@ -58,7 +58,12 @@ var eventSchema = new Schema({
         type: String,
     },
     event_joiner: [{
-            type: String
+        user_id: {
+            type: Schema.ObjectId
+        },
+        capacity: {
+            type: Number
+        }
     }],
     coupon_available: [{
         type: String
