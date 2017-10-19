@@ -20,6 +20,7 @@ function tokenForUser (user) {
 
 exports.signin = function(req, res, next) {
     let user = req.user
+    console.log(user)
     res.send({token: tokenForUser(user), user_id: user._id})
 }
 
@@ -98,6 +99,7 @@ exports.signinLdap = function(req, res, next) {
                 inbox.save(function(err) {
                     
                 })
+                console.log(user)
                 return res.json({user, token: tokenForUser(user)})
             })
         }
@@ -106,6 +108,7 @@ exports.signinLdap = function(req, res, next) {
 
 exports.signup = function(req, res, next) {
     let email = req.body.email
+    let username = req.body.username
     let password = req.body.password
     let name = req.body.name
     let surname = req.body.surname
@@ -116,11 +119,15 @@ exports.signup = function(req, res, next) {
         return res.status(422).json({error: "You must provide an email and password"})
     }
 
-    User.findOne({email: email}, function(err, existingUser) {
+    User.findOne({$or: [
+        { email },
+        { username }
+    ]}, function(err, existingUser) {
         if (err) { return next(err) }
         if (existingUser) { return res.status(422).json({error: "Email taken"})}
         let user = new User({
             email,
+            username,
             password,
             name,
             surname,
