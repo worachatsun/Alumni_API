@@ -270,3 +270,12 @@ exports.getJoinedEvent = function(req, res, next) {
         }
     })
 }
+
+exports.updateUserData = function(req, res, next) {
+    const { name, surname, _id, tel, address, picture } = req.body
+
+    User.findByIdAndUpdate(_id, {name, surname, $set: {'assets.picture': picture}, tel, address}, {new: true}, (err, user) => {
+        delete user.password
+        return res.json({user})
+    })
+}

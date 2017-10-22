@@ -45,7 +45,7 @@ let userSchema = new Schema({
     },
     assets: {
         picture: {
-            type: String,
+            type: Object,
         }
     },
     graduate_histories: [{
