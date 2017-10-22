@@ -20,7 +20,8 @@ function tokenForUser (user) {
 
 exports.signin = function(req, res, next) {
     let user = req.user
-    res.send({token: tokenForUser(user), user_id: user._id})
+    delete user.password
+    return res.json({ user, token: tokenForUser(user)})
 }
 
 exports.adminSignin = function(req, res, next) {
@@ -106,6 +107,7 @@ exports.signinLdap = function(req, res, next) {
 
 exports.signup = function(req, res, next) {
     let email = req.body.email
+    let username = req.body.username
     let password = req.body.password
     let name = req.body.name
     let surname = req.body.surname
@@ -116,11 +118,15 @@ exports.signup = function(req, res, next) {
         return res.status(422).json({error: "You must provide an email and password"})
     }
 
-    User.findOne({email: email}, function(err, existingUser) {
+    User.findOne({$or: [
+        { email },
+        { username }
+    ]}, function(err, existingUser) {
         if (err) { return next(err) }
         if (existingUser) { return res.status(422).json({error: "Email taken"})}
         let user = new User({
             email,
+            username,
             password,
             name,
             surname,
@@ -130,9 +136,14 @@ exports.signup = function(req, res, next) {
                 picture
             }
         })
-        user.save(function(err) {
+        user.save(function(err, user) {
             if (err) { return next(err) }
-            res.json({ user_id: user._id, token: tokenForUser(user)})
+            let inbox = new Inbox({
+                room_id: user._id
+            })
+            delete user.password
+            inbox.save(function(err) {})
+            return res.json({ user, token: tokenForUser(user)})
         })
     })
 }

@@ -13,7 +13,12 @@ let localOptions = {
 }
 
 let localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
-    User.findOne({email: email.toLowerCase()}, function(err, user){
+    User.findOne({
+        $or: [
+            { email: email.toLowerCase() },
+            { username: email }
+        ]
+        }, function(err, user){
         if (err) { return done(err) }
         if (!user) { return done(null, false) }
         user.comparePassword(password, function(err, isMatch) {
