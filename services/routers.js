@@ -33,6 +33,7 @@ router.route('/deleteFavoriteNews').post(AuthenticationController.undoFavoriteNe
 router.route('/checkFavoriteNews').post(AuthenticationController.checkFavoriteNews)
 router.route('/getAllFavoriteNews/:id').get(AuthenticationController.getAllFavoriteNews)
 router.route('/getJoinedEvent/:id').get(AuthenticationController.getJoinedEvent)
+router.route('/updateUserData').post(AuthenticationController.updateUserData)
 
 router.route('/getAllUser').get(UserController.getAllUser)
 router.route('/getUserById/:id').get(UserController.getUserById)
