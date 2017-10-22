@@ -20,8 +20,8 @@ function tokenForUser (user) {
 
 exports.signin = function(req, res, next) {
     let user = req.user
-    console.log(user)
-    res.send({token: tokenForUser(user), user_id: user._id})
+    delete user.password
+    return res.json({ user, token: tokenForUser(user)})
 }
 
 exports.adminSignin = function(req, res, next) {
@@ -99,7 +99,6 @@ exports.signinLdap = function(req, res, next) {
                 inbox.save(function(err) {
                     
                 })
-                console.log(user)
                 return res.json({user, token: tokenForUser(user)})
             })
         }
@@ -137,9 +136,14 @@ exports.signup = function(req, res, next) {
                 picture
             }
         })
-        user.save(function(err) {
+        user.save(function(err, user) {
             if (err) { return next(err) }
-            res.json({ user_id: user._id, token: tokenForUser(user)})
+            let inbox = new Inbox({
+                room_id: user._id
+            })
+            delete user.password
+            inbox.save(function(err) {})
+            return res.json({ user, token: tokenForUser(user)})
         })
     })
 }
