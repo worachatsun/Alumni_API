@@ -131,3 +131,12 @@ exports.removeNews = function(req, res) {
         return res.json({ status: 'success' })
     })
 }
+
+exports.getExpireNews = (req, res) => {
+    const now = new Date()
+    const startOfToday = new Date()
+    startOfToday.setDate(startOfToday.getDate() + parseInt(req.params.day))
+    News.find({expiry_date: {$gte: now, $lt: startOfToday }}, function (err, news) { 
+        return res.json({news})
+    })
+}

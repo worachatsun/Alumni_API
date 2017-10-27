@@ -17,6 +17,6 @@ exports.getAdminData = (req, res, next) => {
             return res.json({ user: dataCreateToken._doc })
         })
     }else{
-        return res.json({auth: 'Server Error or Unauthorized'})
+        return res.status(500).json({auth: 'Server Error or Unauthorized'})
     }
 }
