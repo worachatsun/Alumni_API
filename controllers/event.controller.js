@@ -194,7 +194,6 @@ exports.getEventsById = function(req, res, next) {
 }
 
 exports.editEvent = function(req, res, next) {
-    console.log(req.body)
     const { 
         person_limit, 
         event_name, 
@@ -237,5 +236,14 @@ exports.removeEvent = function(req, res) {
                 return res.json(event)
             }
         }).sort({created_at: 'desc'})
+    })
+}
+
+exports.getExpireEvent = (req, res) => {
+    const now = new Date()
+    const startOfToday = new Date()
+    startOfToday.setDate(startOfToday.getDate() + parseInt(req.params.day))
+    Event.find({event_date_end: {$gte: now, $lt: startOfToday }}, function (err, event) { 
+        return res.json({event})
     })
 }

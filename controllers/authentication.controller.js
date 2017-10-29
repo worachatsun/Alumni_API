@@ -26,7 +26,7 @@ exports.signin = function(req, res, next) {
 
 exports.adminSignin = function(req, res, next) {
     const { username, password } = req.body 
-
+    
     Admin.findOne({username}, (err, user) => {
         if(err) { return res.json(err) }
         if(user) {
@@ -36,18 +36,45 @@ exports.adminSignin = function(req, res, next) {
                     delete dataCreateToken._doc.password
                     return res.json({ token: tokenForUser(dataCreateToken._doc), user: dataCreateToken._doc })
                 }else
-                    return res.json('Incorrect password') 
+                    return res.status(500).json('Incorrect password')
             })
         }else
-            return res.json('Incorrect username or email') 
+            return res.status(500).json('Incorrect username or email')
+    })
+}
+
+exports.adminChangePassword = (req, res) => {
+    const { _id, oldPassword, newPassword } = req.body
+    Admin.findById(_id, (err, user) => {
+        if(err) { return res.status(500) }
+        if(user) {
+            bcrypt.compare(oldPassword, user.password, (err, isValid) => {
+                if(isValid) {
+                    bcrypt.hash(newPassword, 10).then(hash => {
+                        Admin.findByIdAndUpdate(_id, {password: hash}, {new: true}, (err, user) => {
+                            return res.json({user})
+                        })
+                    })
+                } else {
+                    return res.status(500).json('Incorrect password')
+                }
+            })
+        }
     })
 }
 
 exports.adminRegister = (req, res) => {
-    const { username, password } = req.body 
+    const { username, password, email, name, surname, role, tel, address, picture } = req.body 
 
     const admin = new Admin({
-        username
+        username,
+        email, 
+        name, 
+        surname, 
+        role, 
+        tel, 
+        address, 
+        picture
     })
 
     bcrypt.hash(password, 10).then((hash) => {
@@ -56,7 +83,7 @@ exports.adminRegister = (req, res) => {
             if(err) { return res.json(err) }
             const dataCreateToken = Object.assign({}, user)
             delete dataCreateToken._doc.password
-            return res.json({ token: tokenForUser(dataCreateToken._doc), user: dataCreateToken._doc }).code(201)
+            return res.json({ token: tokenForUser(dataCreateToken._doc), user: dataCreateToken._doc })
         })
     })
 }

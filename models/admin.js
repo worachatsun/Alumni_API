@@ -12,7 +12,27 @@ let adminSchema = new Schema({
         type: String,
         required: 'password is required'
     },
+    email: {
+        type: String,
+        unique: true,
+        required: 'email is required'
+    },
     picture: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+    surname: {
+        type: String,
+    },
+    role: {
+        type: String,
+    },
+    tel: {
+        type: String,
+    },
+    address: {
         type: String,
     },
     created_at: {
