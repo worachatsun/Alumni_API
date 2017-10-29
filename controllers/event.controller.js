@@ -240,7 +240,6 @@ exports.removeEvent = function(req, res) {
 }
 
 exports.getExpireEvent = (req, res) => {
-    console.log(parseInt(req.params.day))
     const now = new Date()
     const startOfToday = new Date()
     startOfToday.setDate(startOfToday.getDate() + parseInt(req.params.day))

@@ -25,6 +25,7 @@ router.route('/protected').get(requireAuth, protected)
 
 router.route('/signup').post(AuthenticationController.signup)
 router.route('/adminSignup').post(AuthenticationController.adminRegister)
+router.route('/adminChangePass').post(AuthenticationController.adminChangePassword)
 router.route('/signin').post([requireLogin, AuthenticationController.signin])
 router.route('/adminSignin').post( AuthenticationController.adminSignin)
 router.route('/signinLdap').post([requireLdapLogin, AuthenticationController.signinLdap])
