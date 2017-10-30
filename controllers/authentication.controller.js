@@ -63,6 +63,31 @@ exports.adminChangePassword = (req, res) => {
     })
 }
 
+exports.seedAdmin = () => {
+    Admin.find({}, function(err, admin) {
+        if (admin.length === 0) {
+            const admin = new Admin({
+                username: 'admin',
+                email: 'admin', 
+                name: 'admin', 
+                surname: 'admin', 
+                role: 'admin', 
+                tel: '0800000000', 
+                address: '', 
+                picture: ''
+            })
+        
+            bcrypt.hash('admin', 10).then((hash) => {
+                admin.password = hash
+                admin.save((err, user) => {
+                    if(err) { return err }
+                    return 'seeding success'
+                })
+            })
+        }
+    })
+}
+
 exports.adminRegister = (req, res) => {
     const { username, password, email, name, surname, role, tel, address, picture } = req.body 
 

@@ -16,5 +16,8 @@ module.exports = function() {
     require('../models/inbox')
     require('../models/admin')
 
+    const AuthenticationController = require('../controllers/authentication.controller')
+    AuthenticationController.seedAdmin()
+
     return db
 }
