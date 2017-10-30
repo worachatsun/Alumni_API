@@ -5,6 +5,8 @@ module.exports = function() {
     mongoose.set('debug', config.debug)
     let db = mongoose.connect(config.mongoUri, {
         useMongoClient: true
+    }, function(error) {
+        console.log(error)
     })
     
     require('../models/user')
