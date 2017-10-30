@@ -62,7 +62,7 @@ exports.getNews = function(req, res, next) {
         if (err) {
             return next(err)
         } else {
-            res.json(news)
+            return res.json(news)
         }
     }).sort({created_at: 'desc'})
 }
