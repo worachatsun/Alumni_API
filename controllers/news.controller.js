@@ -65,6 +65,7 @@ exports.getNews = function(req, res, next) {
             return res.json(news)
         }
     }).sort({created_at: 'desc'})
+    return res.json({error: 'ai sus'})
 }
 
 exports.getNewsByFaculty = function(req, res, next) {
