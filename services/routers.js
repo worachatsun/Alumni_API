@@ -103,6 +103,26 @@ router.route('/upload/').post(function(req, res) {
 	})
 })
 
+router.route('/upload/editor/').post(function(req, res) {
+    let img = ''
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'public/editors/')
+        },
+        filename: function (req, file, cb) {
+            const fn = file.originalname.split('.')
+            img = `${fn[0]}-${Date.now()}.${fn[fn.length-1]}`
+            cb(null, img)
+        }
+    })
+    const upload = multer({ storage: storage }).single('editor')
+	upload(req, res, function(err) {
+        if(err) {return console.log(err)}
+        console.log({ img: `static/editors/${img}` })
+		return res.json({ img: `static/editors/${img}` })
+	})
+})
+
 // router.post('/upload', upload.single('cover'), function (req, res, next) {
 //     try {
 //         res.json({ status: 'success' })

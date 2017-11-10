@@ -116,6 +116,7 @@ exports.adminRegister = (req, res) => {
 exports.signinLdap = function(req, res, next) {
     let name = req.user.displayName
     let surname = req.user.givenName
+    let username = req.user.uid
     let uid = req.user.uid
     let email = req.user.mail
     let role = 'alumni'
@@ -134,6 +135,8 @@ exports.signinLdap = function(req, res, next) {
             let user = new User({
                 uid,
                 name,
+                username,
+                password: 'ldap',
                 surname,
                 email,
                 role,
