@@ -84,7 +84,7 @@ router.route('/fetchChat').post(InboxController.fetchInboxChat)
 router.route('/getAllChat').get(InboxController.getAllChat)
 router.route('/getRoomChat/:id').get(InboxController.getRoomChatById)
 
-router.route('/upload/').post(function(req, res) {
+router.route('/upload').post(function(req, res) {
     let img = ''
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
