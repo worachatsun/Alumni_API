@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 exports.createDonation = function(req, res, next) {
     const {
         project_description, 
-        project_name, picture, 
+        project_name,
+        picture, 
         ways_to_donate, 
         created_by, 
         expiry_date,
@@ -15,9 +16,8 @@ exports.createDonation = function(req, res, next) {
         donate_owner_line,
         donate_owner_email
     } = req.body
-    console.log(req.body)
 
-    if (!project_name || !project_description || !picture || !created_by) {
+    if (!project_name || !project_description || !created_by) {
         return res.status(422).json({error: "You must provide an data"})
     }
 

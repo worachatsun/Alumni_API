@@ -20,3 +20,27 @@ exports.getAdminData = (req, res, next) => {
         return res.status(500).json({auth: 'Server Error or Unauthorized'})
     }
 }
+
+exports.getAllAdmin = function(req, res, next) {
+    Admin.find({}, (err, users) => {
+        if (err) { 
+            return next(err)
+        } else {
+            return res.json(users)
+        }
+    })
+}
+
+exports.updateAdminRole = function(req, res, next) {
+    console.log(req.body)
+    Admin.findByIdAndUpdate(req.body._id, {role: req.body.role}, {new: true}, (err, user) => {
+        if (err) { return next(err) }
+        Admin.find({}, (err, users) => {
+            if (err) { 
+                return next(err)
+            } else {
+                return res.json(users)
+            }
+        })
+    })
+}

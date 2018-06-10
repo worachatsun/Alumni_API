@@ -225,7 +225,7 @@ exports.editEvent = function(req, res, next) {
     })
 }
 
-exports.removeEvent = function(req, res) {
+exports.removeEvent = function(req, res, next) {
     const { array_id } = req.body
     Event.remove({_id: {$in: array_id}}, function(err) {
         if (err) { return next(err) }
