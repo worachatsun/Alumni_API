@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt')
 const config = require('../config')
+const axios = require('axios')
 
 function tokenForUser (user) {
     const {_id, uid, name, surname, assets} = user
@@ -71,7 +72,7 @@ exports.seedAdmin = () => {
                 email: 'admin', 
                 name: 'admin', 
                 surname: 'admin', 
-                role: 'admin', 
+                role: 'super_admin', 
                 tel: '0800000000', 
                 address: '', 
                 picture: ''
@@ -125,8 +126,8 @@ exports.signinLdap = function(req, res, next) {
     if (!uid || !name || !surname) {
         return res.status(422).json({error: "You must provide an uid, name and surname"})
     }
-
-    User.findOne({uid}, function(err, existingUser) {
+    
+    User.findOne({username}, function(err, existingUser) {
         if (err) { return next(err) }
         if (existingUser) { 
             const {_id, uid, name, surname, assets} = existingUser

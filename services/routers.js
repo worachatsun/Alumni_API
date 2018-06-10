@@ -40,7 +40,9 @@ router.route('/getAllUser').get(UserController.getAllUser)
 router.route('/getUserById/:id').get(UserController.getUserById)
 router.route('/getUserData').post(UserController.getUserData)
 
+router.route('/getAllAdmin').get(AdminController.getAllAdmin)
 router.route('/getAdminData').post(AdminController.getAdminData)
+router.route('/updateAdminRole').post(AdminController.updateAdminRole)
 
 router.route('/createNews').post(NewsController.createNews)
 router.route('/getNews/:offset/:limit').get(NewsController.getNewsByOffset)
