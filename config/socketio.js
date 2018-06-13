@@ -34,9 +34,9 @@ module.exports = (server, db) => {
                 console.log(sel.length)
                 io.sockets.in(data.room).emit('getMsg', data)
             }
-            // Inbox.findOne({'room_id': data.user.id}, (err, user) => {
+            // Inbox.findOne({'room_id': data.room}, (err, inboxs) => {
             //     if(err) { return console.log(err) }
-            //     console.log(user, 'user')
+            //     console.log(inboxs, 'inboxs')
             // })
         })
 

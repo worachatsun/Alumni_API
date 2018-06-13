@@ -6,6 +6,15 @@ let inboxSchema = new Schema({
         type: Schema.ObjectId,
         required: 'Please insert room Id'
     },
+    name:{
+        type: String
+    },
+    surname:{
+        type: String
+    },
+    uid:{
+        type: String
+    },
     inbox: [{
         createdAt: Date,
         text: String,
