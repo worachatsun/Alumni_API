@@ -149,12 +149,13 @@ exports.signinLdap = function(req, res, next) {
             user.save(function(err, user) {
                 if (err) { return next(err) }
                 let inbox = new Inbox({
-                    room_id: user._id
+                    room_id: user._id,
+                    name: user.name,
+                    surname: user.surname,
+                    uid: user.username
                 })
     
-                inbox.save(function(err) {
-                    
-                })
+                inbox.save(function(err) {})
                 return res.json({user, token: tokenForUser(user)})
             })
         }
@@ -195,7 +196,10 @@ exports.signup = function(req, res, next) {
         user.save(function(err, user) {
             if (err) { return next(err) }
             let inbox = new Inbox({
-                room_id: user._id
+                room_id: user._id,
+                name: user.name,
+                surname: user.surname,
+                uid: user.username
             })
             delete user.password
             inbox.save(function(err) {})

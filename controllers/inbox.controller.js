@@ -31,7 +31,7 @@ exports.updateInboxChat = function(req, res, next) {
                     if (err) {
                         return next(err)
                     } else {
-                        return res.json(inbox[0].inbox.reverse())
+                        return res.json(inbox[0].inbox)
                     }
                 })
             }
