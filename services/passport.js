@@ -59,8 +59,8 @@ let jwtStrategyLdap = new JwtStrategy(jwtOptions, function(payload, done) {
 let OPTS = {
   server: {
     url: 'ldap://10.1.130.12:389',
-    // bindDn: 'uid=kmuttalumni,ou=admin,dc=kmutt,dc=ac,dc=th',
-    // bindCredentials: 'dgG#5DTFS?UgP',
+    bindDn: 'uid=kmuttalumni,ou=admin,dc=kmutt,dc=ac,dc=th',
+    bindCredentials: 'dgG#5DTFS?UgP',
     searchBase: 'ou=people,ou=st,dc=kmutt,dc=ac,dc=th',
     searchFilter: '(uid={{username}})'
   }
