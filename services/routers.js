@@ -39,6 +39,8 @@ router.route('/updateUserData').post(AuthenticationController.updateUserData)
 router.route('/getAllUser').get(UserController.getAllUser)
 router.route('/getUserById/:id').get(UserController.getUserById)
 router.route('/getUserData').post(UserController.getUserData)
+router.route('/getProfileDetail').post(UserController.getProfileDetail)
+router.route('/getProfileWorkplace').post(UserController.getProfileWorkplace)
 
 router.route('/getAllAdmin').get(AdminController.getAllAdmin)
 router.route('/getAdminData').post(AdminController.getAdminData)
